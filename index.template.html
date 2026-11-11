@@ -81,12 +81,13 @@ button, input, select { font: inherit; color: inherit; }
 .section { padding: 72px 0; }
 .section--alt { background: var(--cream); border-block: 1px solid var(--line); }
 .section > .wrap { display: grid; gap: 22px; }
-.sec-head { max-width: 62ch; display: grid; gap: 10px; }
+.sec-head { display: grid; gap: 10px; }
+.sec-head p { max-width: 72ch; }
 .sec-head .kicker { font-family: var(--mono); font-size: .82rem; color: var(--support); }
 .sec-head p:not(.kicker) { color: var(--ink-soft); text-wrap: pretty; }
 
 /* Key findings */
-.stack { display: grid; gap: 16px; max-width: 86ch; }
+.stack { display: grid; gap: 16px; }
 .panel { background: var(--paper); border: 1px solid var(--line); border-radius: var(--r); box-shadow: var(--shadow); padding: 20px 22px; display: grid; gap: 12px; align-content: start; min-width: 0; }
 .panel h3 { padding-bottom: 10px; border-bottom: 1px solid var(--line); }
 .panel ul { margin: 0; padding-left: 18px; display: grid; gap: 8px; }
@@ -162,7 +163,7 @@ button.pill[aria-pressed="true"] { background: var(--pill, var(--ink-soft)); col
 .area-card { background: var(--paper); border: 1px solid var(--line); border-left: 5px solid var(--area-color, var(--support)); border-radius: var(--r); box-shadow: var(--shadow); padding: 22px 24px; display: grid; gap: 14px; }
 .area-card h3 { font-size: 1.4rem; }
 .area-card .role { font-family: var(--mono); font-size: .76rem; letter-spacing: .08em; text-transform: uppercase; color: var(--area-color, var(--support)); }
-.cols3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px 24px; }
+.cols3 { display: grid; grid-template-columns: 1fr; gap: 18px; }
 .cols3 > div { min-width: 0; display: grid; gap: 8px; align-content: start; }
 .cols3 h4, .gcard h4 { font-family: var(--mono); font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; color: var(--support); margin: 0; font-weight: 500; }
 .cols3 ul, .cols3 ol { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
