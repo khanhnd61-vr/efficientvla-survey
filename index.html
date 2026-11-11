@@ -51,15 +51,15 @@ button, input, select { font: inherit; color: inherit; }
 /* Top bar */
 .topbar { position: sticky; top: 0; z-index: 50; height: var(--topbar); background: rgba(255, 242, 225, .82); backdrop-filter: saturate(140%) blur(10px); -webkit-backdrop-filter: saturate(140%) blur(10px); border-bottom: 1px solid var(--line); }
 .topbar__in { height: 100%; display: flex; align-items: center; gap: 28px; }
-.brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font-family: var(--display); font-weight: 700; font-size: 1.25rem; color: var(--primary); }
+.brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font-family: var(--display); font-weight: 700; font-size: 1.25rem; color: var(--primary); white-space: nowrap; }
 .brand:hover { color: var(--primary); }
 .brand__mark { width: 32px; height: 32px; flex: none; border-radius: 9px; box-shadow: 0 2px 8px rgba(75, 46, 15, .2); }
 .nav { display: flex; align-items: center; gap: 28px; margin-left: auto; font-weight: 500; }
 .nav a { color: var(--ink-soft); text-decoration: none; transition: color .18s ease; }
 .nav a:hover { color: var(--primary); }
-.nav__cta { background: var(--primary); color: var(--cream) !important; text-decoration: none; padding: 8px 16px; border-radius: 999px; font-weight: 600; transition: background .2s ease; }
+.nav__cta { background: var(--primary); color: var(--cream) !important; text-decoration: none; padding: 8px 16px; border-radius: 999px; font-weight: 600; transition: background .2s ease; white-space: nowrap; flex: none; }
 .nav__cta:hover { background: #38220a; }
-.lang { display: inline-flex; gap: 2px; padding: 3px; background: var(--bar); border-radius: 999px; }
+.lang { display: inline-flex; gap: 2px; padding: 3px; background: var(--bar); border-radius: 999px; flex: none; }
 .lang button { border: 0; background: transparent; padding: 4px 10px; border-radius: 999px; cursor: pointer; font-family: var(--mono); font-size: .76rem; font-weight: 500; color: var(--ink-soft); }
 .lang button[aria-pressed="true"] { background: var(--primary); color: var(--cream); }
 
@@ -256,20 +256,37 @@ button.pill[aria-pressed="true"] { background: var(--pill, var(--ink-soft)); col
 .footer__links a { color: var(--ink-soft); }
 .footer__links a:hover { color: var(--primary); }
 
-@media (max-width: 860px) { .nav a:not(.nav__cta) { display: none; } .stats { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 860px) { .nav { display: none; } .topbar__in { gap: 12px; } .nav__cta { margin-left: auto; } .stats { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 760px) {
-  .hero { padding: 56px 0 44px; }
+  .hero { padding: 48px 0 40px; }
+  .hero h1 { font-size: clamp(2rem, 9vw, 2.6rem); }
+  .lede { font-size: 1rem; }
+  .stats { margin-top: 32px; }
   .section { padding: 54px 0; }
   .stats { grid-template-columns: 1fr 1fr; }
   .toolbar .count { margin-left: 0; width: 100%; }
   .shortbar { margin-left: 0; }
+  .tabs { border-radius: 16px; }
+  .tab { padding: 6px 11px; font-size: .86rem; }
+  .brand { font-size: 1.08rem; gap: 8px; }
+  .brand__mark { width: 28px; height: 28px; }
+  .nav__cta { padding: 6px 12px; font-size: .88rem; }
+  .lang button { padding: 4px 8px; }
+  .win__hint { display: none; }
+  .panel { padding: 16px; }
+  .area-card { padding: 16px; }
+  .gcard summary { padding: 12px 14px; }
+  .gcard .gbody { padding: 4px 14px 14px; }
+  .bcard { padding: 14px; }
+  .paper { padding: 14px; }
 }
+@media (max-width: 480px) { .hide-sm { display: none; } }
 </style>
 </head>
 <body>
 <header class="topbar">
   <div class="wrap topbar__in">
-    <a class="brand" href="#top" aria-label="Efficient VLA Atlas, back to top"><svg class="brand__mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#4B2E0F"/><circle cx="9" cy="22" r="4" fill="#0e8a6e"/><circle cx="16" cy="11" r="4" fill="#F4C15D"/><circle cx="23" cy="22" r="4" fill="#c4651c"/><path d="M11.5 19.5 13.5 14M18.5 14l2 5.5M13 22h6" stroke="#FAF7F2" stroke-width="1.6" stroke-linecap="round"/></svg><span>Efficient VLA Atlas</span></a>
+    <a class="brand" href="#top" aria-label="Efficient VLA Atlas, back to top"><svg class="brand__mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#4B2E0F"/><circle cx="9" cy="22" r="4" fill="#0e8a6e"/><circle cx="16" cy="11" r="4" fill="#F4C15D"/><circle cx="23" cy="22" r="4" fill="#c4651c"/><path d="M11.5 19.5 13.5 14M18.5 14l2 5.5M13 22h6" stroke="#FAF7F2" stroke-width="1.6" stroke-linecap="round"/></svg><span><span class="hide-sm">Efficient </span>VLA Atlas</span></a>
     <nav class="nav" aria-label="Sections">
       <a href="#notes" data-i18n="nav.findings">Findings</a>
       <a href="#taxonomy" data-i18n="nav.taxonomy">Taxonomy</a>
