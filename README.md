@@ -22,13 +22,15 @@ python3 site/build.py
 
 ## Publish to GitHub Pages
 
+The site is deployed from the `main` branch root of
+[khanhnd61-vr/efficientvla-survey](https://github.com/khanhnd61-vr/efficientvla-survey)
+and served at <https://khanhnd61-vr.github.io/efficientvla-survey/>
+(also <https://havi.fit/efficientvla-survey/> through the account's custom domain).
+After rebuilding, commit `index.html` and `papers.json` together with the source files and push:
+
 ```bash
-cd site
-git init -b main
-git add .
-git commit -m "Efficient VLA Atlas"
-gh repo create efficient-vla-atlas --public --source . --push
-gh api -X POST repos/<user>/efficient-vla-atlas/pages -f build_type=legacy -f source[branch]=main -f source[path]=/
+python3 build.py
+git add -A && git commit -m "Update atlas" && git push
 ```
 
-The site is then served at `https://<user>.github.io/efficient-vla-atlas/`.
+GitHub Pages rebuilds within about a minute.
