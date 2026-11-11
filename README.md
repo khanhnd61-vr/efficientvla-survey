@@ -11,6 +11,7 @@ added after the survey's August 2026 cutoff, with reading notes on what is settl
 - `index.template.html` is the page; `build.py` inlines the data so the page works offline and on GitHub Pages.
 - The taxonomy map in the page is an inline SVG drawn by the page script from the same data: five columns follow the VLA pipeline (design, train, run, ship, measure), circle area tracks each category's primary-paper count, and links come from the survey's secondary section tags. Clicking a circle filters the paper list.
 - `extras.json` holds hand-added papers and the extra area 7 (Evaluation and Robustness).
+- The page is bilingual. English is inline in `index.template.html`; the Vietnamese interface strings live in the `VI` and `STR.vi` dictionaries of the page script, and `analysis.vi.json` holds the Vietnamese area and category names plus the translated analysis. The EN/VI switch in the top bar is remembered per browser and defaults to the browser language. Paper titles and summaries stay in English.
 - `analysis.json` holds, for every area and category, the problem it addresses, the open gaps, and one proposed research direction (bit, flip, first experiments, claim, cost in GPU-days, fit, risk) plus key-paper title fragments that `build.py` resolves against the paper list. The page renders it as the "Analysis" section: area tabs, a direction board with type filters and sorting, expandable category cards, and a per-browser shortlist that can be copied as Markdown. The Analysis section; deep link to a card with `#gap-5.1` or `#gap-A5`.
 
 ## Update

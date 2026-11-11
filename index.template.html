@@ -59,6 +59,9 @@ button, input, select { font: inherit; color: inherit; }
 .nav a:hover { color: var(--primary); }
 .nav__cta { background: var(--primary); color: var(--cream) !important; text-decoration: none; padding: 8px 16px; border-radius: 999px; font-weight: 600; transition: background .2s ease; }
 .nav__cta:hover { background: #38220a; }
+.lang { display: inline-flex; gap: 2px; padding: 3px; background: var(--bar); border-radius: 999px; }
+.lang button { border: 0; background: transparent; padding: 4px 10px; border-radius: 999px; cursor: pointer; font-family: var(--mono); font-size: .76rem; font-weight: 500; color: var(--ink-soft); }
+.lang button[aria-pressed="true"] { background: var(--primary); color: var(--cream); }
 
 /* Hero */
 .hero { padding: 84px 0 64px; }
@@ -230,7 +233,7 @@ button.pill[aria-pressed="true"] { background: var(--pill, var(--ink-soft)); col
 .paper .title a:hover { color: var(--support); }
 .paper .blurb { max-width: 90ch; font-size: .92rem; }
 .paper .note { color: var(--ink-soft); font-size: .86rem; max-width: 90ch; }
-.paper .note::before { content: "Note "; font-family: var(--mono); font-size: .68rem; letter-spacing: .06em; text-transform: uppercase; color: var(--support); }
+.paper .note::before { content: attr(data-label) " "; font-family: var(--mono); font-size: .68rem; letter-spacing: .06em; text-transform: uppercase; color: var(--support); }
 .tag { display: inline-block; font-family: var(--mono); font-size: .7rem; font-weight: 500; padding: 1px 9px; border-radius: 999px; background: var(--bar); color: var(--ink-soft); white-space: nowrap; }
 .tag.cat { background: rgba(92, 122, 94, .14); color: var(--support); border: 0; cursor: pointer; }
 .tag.cat:hover { background: var(--sage); color: #2f3d2f; }
@@ -268,21 +271,22 @@ button.pill[aria-pressed="true"] { background: var(--pill, var(--ink-soft)); col
   <div class="wrap topbar__in">
     <a class="brand" href="#top" aria-label="Efficient VLA Atlas, back to top"><svg class="brand__mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#4B2E0F"/><circle cx="9" cy="22" r="4" fill="#0e8a6e"/><circle cx="16" cy="11" r="4" fill="#F4C15D"/><circle cx="23" cy="22" r="4" fill="#c4651c"/><path d="M11.5 19.5 13.5 14M18.5 14l2 5.5M13 22h6" stroke="#FAF7F2" stroke-width="1.6" stroke-linecap="round"/></svg><span>Efficient VLA Atlas</span></a>
     <nav class="nav" aria-label="Sections">
-      <a href="#notes">Findings</a>
-      <a href="#taxonomy">Taxonomy</a>
-      <a href="#gaps">Analysis</a>
-      <a href="#explorer">Papers</a>
+      <a href="#notes" data-i18n="nav.findings">Findings</a>
+      <a href="#taxonomy" data-i18n="nav.taxonomy">Taxonomy</a>
+      <a href="#gaps" data-i18n="nav.analysis">Analysis</a>
+      <a href="#explorer" data-i18n="nav.papers">Papers</a>
     </nav>
-    <a class="nav__cta" href="https://khanhnd61-vr.github.io/">Home &#8599;</a>
+    <a class="nav__cta" href="https://khanhnd61-vr.github.io/" data-i18n="nav.home">Home &#8599;</a>
+    <div class="lang" role="group" aria-label="Language"><button type="button" data-lang="en" aria-pressed="true">EN</button><button type="button" data-lang="vi" aria-pressed="false">VI</button></div>
   </div>
 </header>
 
 <main id="top">
 <section class="hero">
   <div class="wrap hero__in">
-    <p class="eyebrow">Efficient vision-language-action research</p>
+    <p class="eyebrow" data-i18n="hero.eyebrow">Efficient vision-language-action research</p>
     <h1>Efficient VLA Atlas</h1>
-    <p class="lede">Every paper from the <a href="https://github.com/guanweifan/awesome-efficient-vla">Awesome-Efficient-VLA</a> survey list (arXiv 2510.17111, coverage through August 2026), extended with the benchmark, robustness, delay-aware and compact-policy papers that appeared after it. Start from the key findings and the analysis if you are deciding what to build next.</p>
+    <p class="lede" data-i18n="hero.lede">Every paper from the <a href="https://github.com/guanweifan/awesome-efficient-vla">Awesome-Efficient-VLA</a> survey list (arXiv 2510.17111, coverage through August 2026), extended with the benchmark, robustness, delay-aware and compact-policy papers that appeared after it. Start from the key findings and the analysis if you are deciding what to build next.</p>
     <div class="stats" id="stats"></div>
   </div>
 </section>
@@ -290,13 +294,13 @@ button.pill[aria-pressed="true"] { background: var(--pill, var(--ink-soft)); col
 <section id="notes" class="section section--alt">
 <div class="wrap">
   <div class="sec-head">
-    <h2>Key findings</h2>
-    <p>What the lightweight-architecture line (3.1) and its neighbors have settled as of November 2026, the assumptions those papers share, and the regimes that are still empty. The findings focus on policies under 100M parameters because that is where the open questions are.</p>
+    <h2 data-i18n="notes.h2">Key findings</h2>
+    <p data-i18n="notes.p">What the lightweight-architecture line (3.1) and its neighbors have settled as of November 2026, the assumptions those papers share, and the regimes that are still empty. The findings focus on policies under 100M parameters because that is where the open questions are.</p>
   </div>
   <div class="stack">
     <div class="panel">
-      <h3>Settled findings</h3>
-      <ul>
+      <h3 data-i18n="notes.settled.h3">Settled findings</h3>
+      <ul data-i18n="notes.settled.ul">
         <li><b>The parameter-count race on LIBERO is over.</b> CoRP reaches 97.0% at 48.9M, MicroVLA 90.2% at 12.4M, and MINERVA 95.1% at 0.54M. Success saturates near 1M parameters. "Smallest model above X%" is no longer a contribution.</li>
         <li><b>Language is nearly irrelevant on closed-set benchmarks.</b> CoRP shows it matters only on LIBERO-Goal and slightly hurts on RoboTwin; LIBERO-Plus shows VLAs largely ignore instructions. MicroVLA's static text lookup is the logical endpoint.</li>
         <li><b>Fine-grained, pretrained, task-adapted visual features carry the performance.</b> CoRP's controlled ablations put 14 to 20 points on each property; a hard instruction-aware token budget beats a variational bottleneck.</li>
@@ -306,8 +310,8 @@ button.pill[aria-pressed="true"] { background: var(--pill, var(--ink-soft)); col
       </ul>
     </div>
     <div class="panel">
-      <h3>Assumptions the compact-policy papers share</h3>
-      <ul>
+      <h3 data-i18n="notes.assume.h3">Assumptions the compact-policy papers share</h3>
+      <ul data-i18n="notes.assume.ul">
         <li><b>Efficiency means parameters</b>, plus a synthetic-input latency on a desktop GPU; quality means in-distribution LIBERO success.</li>
         <li><b>The encoder must be fine-tuned per task set.</b> CoRP: freezing DINOv2 costs 19.8 points. Patch Policy reports the opposite with dense frozen patches, but only on LIBERO-Goal. The contradiction is unresolved.</li>
         <li><b>Pretrained initialization is decisive.</b> CoRP: a random ViT-S gets 78%. MINERVA: a 0.54M model trained from scratch gets 95%. Also unresolved; the difference is somewhere in resolution, architecture bias, token budget or augmentation.</li>
@@ -316,8 +320,8 @@ button.pill[aria-pressed="true"] { background: var(--pill, var(--ink-soft)); col
       </ul>
     </div>
     <div class="panel flag">
-      <h3>Open regimes and crowded ones</h3>
-      <ul>
+      <h3 data-i18n="notes.open.h3">Open regimes and crowded ones</h3>
+      <ul data-i18n="notes.open.ul">
         <li><b>Open: microcontroller-class closed-loop control.</b> Nothing found. TinyVLM puts an 892 KB distilled encoder on an MCU for detection only. The research question is whether the pretraining benefit CoRP calls decisive can be distilled into a sub-500K integer encoder.</li>
         <li><b>Open: the two contradictions above</b> (frozen vs. fine-tuned; pretrained vs. scratch), each resolvable in a few GPU-days with a controlled 2x2.</li>
         <li><b>Crowded: delay-aware training</b> (Action ControlNet, DEFLECT, training-time RTC, RL for real-time VLAs).</li>
@@ -332,10 +336,10 @@ button.pill[aria-pressed="true"] { background: var(--pill, var(--ink-soft)); col
 <section id="taxonomy" class="section">
 <div class="wrap">
   <div class="sec-head">
-    <h2>Taxonomy</h2>
-    <p>Areas 3 to 6 follow the survey's numbering. Area 7 is added here for benchmark and robustness work the survey does not index. Click a circle to open that category's analysis and filter the paper list to it; hover for the paper count and the categories it shares papers with.</p>
+    <h2 data-i18n="tax.h2">Taxonomy</h2>
+    <p data-i18n="tax.p">Areas 3 to 6 follow the survey's numbering. Area 7 is added here for benchmark and robustness work the survey does not index. Click a circle to open that category's analysis and filter the paper list to it; hover for the paper count and the categories it shares papers with.</p>
   </div>
-  <div class="win"><div class="win__bar"><span class="win__dots"><i></i><i></i><i></i></span><span class="win__name">taxonomy-map</span><span class="win__hint">circle area = papers · click to select</span></div>
+  <div class="win"><div class="win__bar"><span class="win__dots"><i></i><i></i><i></i></span><span class="win__name">taxonomy-map</span><span class="win__hint" data-i18n="tax.hint">circle area = papers · click to select</span></div>
   <div class="map-wrap"><svg id="map" role="img" aria-label="Map of the efficient VLA taxonomy: five areas laid out along the pipeline, categories sized by paper count, links for shared secondary sections"></svg></div></div>
   <div class="legend" id="legend"></div>
   <div class="selbar" id="selbar" hidden></div>
@@ -345,16 +349,16 @@ button.pill[aria-pressed="true"] { background: var(--pill, var(--ink-soft)); col
 <section id="gaps" class="section section--alt">
 <div class="wrap">
   <div class="sec-head">
-    <h2>Analysis</h2>
-    <p>For every area and sub-area: the problem it is trying to solve, what is still open after the papers indexed here, and one research direction scoped for a 2 &times; RTX 3090 budget. Each direction is written as a bit flip (the assumption the field makes, and what to replace it with), a first experiment, and the claim it would support. Star the ones you want to keep; the shortlist stays in this browser. Selecting a category on the map narrows the paper list below; use Clear selection to undo it.</p>
+    <h2 data-i18n="gaps.h2">Analysis</h2>
+    <p data-i18n="gaps.p">For every area and sub-area: the problem it is trying to solve, what is still open after the papers indexed here, and one research direction scoped for a 2 &times; RTX 3090 budget. Each direction is written as a bit flip (the assumption the field makes, and what to replace it with), a first experiment, and the claim it would support. Star the ones you want to keep; the shortlist stays in this browser. Selecting a category on the map narrows the paper list below; use Clear selection to undo it.</p>
   </div>
   <div class="gap-tools">
     <div class="tabs" id="area-tabs" role="tablist"></div>
     <div class="gap-filters">
-      <span class="group" id="type-filters"><span>Type</span></span>
-      <span class="group"><label for="gap-sort">Sort</label>
-        <select id="gap-sort"><option value="id">by section</option><option value="days">by GPU-days</option><option value="type">by type</option></select></span>
-      <span class="shortbar"><span id="short-count"></span><button type="button" class="btn" id="short-copy">Copy shortlist as Markdown</button></span>
+      <span class="group" id="type-filters"><span data-i18n="gaps.type">Type</span></span>
+      <span class="group"><label for="gap-sort" data-i18n="gaps.sort">Sort</label>
+        <select id="gap-sort"><option value="id" data-i18n="sort.id">by section</option><option value="days" data-i18n="sort.days">by GPU-days</option><option value="type" data-i18n="sort.type">by type</option></select></span>
+      <span class="shortbar"><span id="short-count"></span><button type="button" class="btn" id="short-copy" data-i18n="gaps.copy">Copy shortlist as Markdown</button></span>
     </div>
     <div id="copy-area" hidden></div>
     <div class="selbar" id="selbar2" hidden></div>
@@ -366,26 +370,26 @@ button.pill[aria-pressed="true"] { background: var(--pill, var(--ink-soft)); col
 <section id="explorer" class="section">
 <div class="wrap">
   <div class="sec-head">
-    <h2>Papers</h2>
-    <p>Newest first, a page at a time. Each paper appears once under its primary category. Secondary relevance from the survey is shown as extra category tags. Papers marked <span class="tag added">added</span> were not in the survey list.</p>
+    <h2 data-i18n="papers.h2">Papers</h2>
+    <p data-i18n="papers.p">Newest first, a page at a time. Each paper appears once under its primary category. Secondary relevance from the survey is shown as extra category tags. Papers marked <span class="tag added">added</span> were not in the survey list.</p>
   </div>
   <div class="toolbar" role="search">
-    <input type="search" id="q" placeholder="Search title, summary, venue" aria-label="Search papers" autocomplete="off">
+    <input type="search" id="q" placeholder="Search title, summary, venue" aria-label="Search papers" data-i18n-placeholder="papers.q" autocomplete="off">
     <select id="year" aria-label="Year">
-      <option value="all">All years</option>
+      <option value="all" data-i18n="papers.allYears">All years</option>
     </select>
     <select id="source" aria-label="Source">
-      <option value="all">Survey and added</option>
-      <option value="survey">Survey only</option>
-      <option value="added">Added only</option>
+      <option value="all" data-i18n="src.all">Survey and added</option>
+      <option value="survey" data-i18n="src.survey">Survey only</option>
+      <option value="added" data-i18n="src.added">Added only</option>
     </select>
-    <label class="chk"><input type="checkbox" id="code"> Has code</label>
-    <button type="button" id="clear">Clear filters</button>
+    <label class="chk"><input type="checkbox" id="code"> <span data-i18n="papers.code">Has code</span></label>
+    <button type="button" id="clear" data-i18n="papers.clear">Clear filters</button>
     <span class="count" id="count"></span>
   </div>
   <div class="active-filters" id="active"></div>
   <div class="list" id="list"></div>
-  <div class="pager" id="pager"><button type="button" id="prev" aria-label="Previous page">&#8249; Previous</button><span class="count" id="pageinfo"></span><button type="button" id="next" aria-label="Next page">Next &#8250;</button><label>Per page <select id="per" aria-label="Papers per page"><option value="10" selected>10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select></label></div>
+  <div class="pager" id="pager"><button type="button" id="prev" aria-label="Previous page" data-i18n="pager.prev">&#8249; Previous</button><span class="count" id="pageinfo"></span><button type="button" id="next" aria-label="Next page" data-i18n="pager.next">Next &#8250;</button><label><span data-i18n="pager.per">Per page</span> <select id="per" aria-label="Papers per page"><option value="10" selected>10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select></label></div>
 </div>
 </section>
 
@@ -395,12 +399,12 @@ button.pill[aria-pressed="true"] { background: var(--pill, var(--ink-soft)); col
   <div class="wrap footer__in">
     <div>
       <p class="brand"><svg class="brand__mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#4B2E0F"/><circle cx="9" cy="22" r="4" fill="#0e8a6e"/><circle cx="16" cy="11" r="4" fill="#F4C15D"/><circle cx="23" cy="22" r="4" fill="#c4651c"/><path d="M11.5 19.5 13.5 14M18.5 14l2 5.5M13 22h6" stroke="#FAF7F2" stroke-width="1.6" stroke-linecap="round"/></svg><span>Efficient VLA Atlas</span></p>
-      <p class="footer__note">Survey data from Awesome-Efficient-VLA (Guan et al., "Efficient Vision-Language-Action Models for Embodied Manipulation: A Systematic Survey", arXiv 2510.17111). Added entries, key findings and analysis compiled November 2026. Part of <a href="https://khanhnd61-vr.github.io/">Havilab</a>.</p>
+      <p class="footer__note" data-i18n="footer.note">Survey data from Awesome-Efficient-VLA (Guan et al., "Efficient Vision-Language-Action Models for Embodied Manipulation: A Systematic Survey", arXiv 2510.17111). Added entries, key findings and analysis compiled November 2026. Part of <a href="https://khanhnd61-vr.github.io/">Havilab</a>.</p>
     </div>
     <nav class="footer__links" aria-label="Project links">
-      <a href="https://github.com/khanhnd61-vr/efficientvla-survey" target="_blank" rel="noopener">Source on GitHub</a>
+      <a href="https://github.com/khanhnd61-vr/efficientvla-survey" target="_blank" rel="noopener" data-i18n="footer.source">Source on GitHub</a>
       <a href="https://github.com/guanweifan/awesome-efficient-vla" target="_blank" rel="noopener">Awesome-Efficient-VLA</a>
-      <a href="https://arxiv.org/abs/2510.17111" target="_blank" rel="noopener">Survey paper</a>
+      <a href="https://arxiv.org/abs/2510.17111" target="_blank" rel="noopener" data-i18n="footer.survey">Survey paper</a>
     </nav>
   </div>
 </footer>
@@ -415,20 +419,86 @@ button.pill[aria-pressed="true"] { background: var(--pill, var(--ink-soft)); col
   function refilter() { state.page = 0; render(); }
 
   var $ = function (id) { return document.getElementById(id); };
+  // Language. English is inline in the markup; Vietnamese strings live here and in analysis.vi.json.
+  var LANG_KEY = 'atlas-lang';
+  var lang = (function () { try { var v = localStorage.getItem(LANG_KEY); if (v === 'vi' || v === 'en') return v; } catch (e) {} return (navigator.language || '').toLowerCase().indexOf('vi') === 0 ? 'vi' : 'en'; })();
+  var STR = {
+    en: { papers: 'papers', paper: 'paper', fromSurvey: 'from the survey', addedAfter: 'added after it', categories: 'categories', withCode: 'with code', directions: 'research directions',
+      area: 'Area', taggedBoth: 'tagged with both', primary: 'primary papers', shares: 'Shares papers with', direction: 'Direction',
+      lg1: 'circle area = primary papers in the category', lg2: 'link width = papers the survey tags with both categories', lg3: 'columns follow the VLA pipeline, left to right', lg4: 'click a circle to open its problems, gaps and direction',
+      selected: 'Selected', clearSel: 'Clear selection', mechanism: 'mechanism', system: 'system', analysis: 'analysis', benchmark: 'benchmark',
+      about: 'about', gpuDay: 'GPU-day', gpuDays: 'GPU-days', proposed: 'Proposed direction', bit: 'Bit', flip: 'Flip', claim: 'Claim', cost: 'Cost', fit: 'Fit', risk: 'Risk', first: 'First experiments',
+      problem: 'Problem', gaps: 'Open gaps', keyPapers: 'Key papers', showPapers: 'Show the {n} papers', cross: 'cross-cutting', openCard: 'Problem, gaps and plan', allDir: 'All directions', shortlist: 'Shortlist',
+      shortlisted: '{n} shortlisted', emptyShort: 'Nothing shortlisted yet. Star a direction to keep it here.', emptyType: 'No directions match this type filter.', addShort: 'Add to shortlist', nothingShort: 'Nothing shortlisted yet.',
+      copied: 'Copied {n} as Markdown.', mdTitle: 'Efficient VLA Atlas shortlist', mdCopy: 'Shortlist as Markdown',
+      also: 'also', code: 'code', project: 'project', added: 'added', secondary: 'secondary relevance', note: 'Note', noPapers: 'No papers match. Clear a filter or try a shorter search.', of: 'of', page: 'page' },
+    vi: { papers: 'bài báo', paper: 'bài báo', fromSurvey: 'từ khảo sát', addedAfter: 'bổ sung sau đó', categories: 'mục', withCode: 'có mã nguồn', directions: 'hướng nghiên cứu',
+      area: 'Lĩnh vực', taggedBoth: 'gắn cả hai mục', primary: 'bài báo chính', shares: 'Chia sẻ bài báo với', direction: 'Hướng đề xuất',
+      lg1: 'diện tích hình tròn = số bài báo chính trong mục', lg2: 'độ dày liên kết = số bài khảo sát gắn với cả hai mục', lg3: 'các cột theo pipeline VLA, từ trái sang phải', lg4: 'nhấn vào hình tròn để mở bài toán, khoảng trống và hướng đề xuất',
+      selected: 'Đang chọn', clearSel: 'Bỏ chọn', mechanism: 'cơ chế', system: 'hệ thống', analysis: 'phân tích', benchmark: 'benchmark',
+      about: 'khoảng', gpuDay: 'GPU-ngày', gpuDays: 'GPU-ngày', proposed: 'Hướng nghiên cứu đề xuất', bit: 'Giả định', flip: 'Lật lại', claim: 'Luận điểm', cost: 'Chi phí', fit: 'Phù hợp', risk: 'Rủi ro', first: 'Thí nghiệm đầu tiên',
+      problem: 'Bài toán', gaps: 'Khoảng trống còn mở', keyPapers: 'Bài báo chính', showPapers: 'Xem {n} bài báo', cross: 'xuyên suốt', openCard: 'Bài toán, khoảng trống và kế hoạch', allDir: 'Tất cả hướng', shortlist: 'Danh sách chọn',
+      shortlisted: 'đã chọn {n}', emptyShort: 'Chưa chọn hướng nào. Nhấn sao để giữ một hướng ở đây.', emptyType: 'Không có hướng nào khớp bộ lọc loại này.', addShort: 'Thêm vào danh sách chọn', nothingShort: 'Chưa chọn hướng nào.',
+      copied: 'Đã sao chép {n} hướng dưới dạng Markdown.', mdTitle: 'Danh sách chọn Efficient VLA Atlas', mdCopy: 'Danh sách chọn dạng Markdown',
+      also: 'cũng', code: 'mã nguồn', project: 'trang dự án', added: 'bổ sung', secondary: 'liên quan thứ cấp', note: 'Ghi chú', noPapers: 'Không có bài báo nào khớp. Hãy bỏ một bộ lọc hoặc rút ngắn từ khóa.', of: 'trên', page: 'trang' }
+  };
+  function t(k, n) { var d = STR[lang] || STR.en; var v = d[k] != null ? d[k] : STR.en[k]; return n == null ? v : v.replace('{n}', n); }
+  var VI = {
+    'nav.findings': 'Phát hiện', 'nav.taxonomy': 'Phân loại', 'nav.analysis': 'Phân tích', 'nav.papers': 'Bài báo', 'nav.home': 'Trang chủ &#8599;',
+    'hero.eyebrow': 'Nghiên cứu mô hình thị giác-ngôn ngữ-hành động hiệu quả',
+    'hero.lede': 'Toàn bộ bài báo trong danh sách khảo sát <a href="https://github.com/guanweifan/awesome-efficient-vla">Awesome-Efficient-VLA</a> (arXiv 2510.17111, bao phủ đến tháng 8/2026), bổ sung các bài về benchmark, độ bền vững, nhận biết độ trễ và chính sách gọn xuất hiện sau đó. Hãy bắt đầu từ các phát hiện chính và phần phân tích nếu bạn đang quyết định sẽ xây dựng gì tiếp theo. Tiêu đề và tóm tắt bài báo giữ nguyên tiếng Anh.',
+    'notes.h2': 'Phát hiện chính',
+    'notes.p': 'Những gì dòng kiến trúc gọn nhẹ (3.1) và các mục lân cận đã xác lập tính đến tháng 11/2026, các giả định mà những bài báo đó cùng chia sẻ, và các chế độ vẫn còn bỏ trống. Phần này tập trung vào chính sách dưới 100M tham số vì đó là nơi các câu hỏi mở nằm.',
+    'notes.settled.h3': 'Những điều đã xác lập',
+    'notes.settled.ul': '<li><b>Cuộc đua số tham số trên LIBERO đã kết thúc.</b> CoRP đạt 97,0% với 48,9M, MicroVLA 90,2% với 12,4M, và MINERVA 95,1% với 0,54M. Thành công bão hòa quanh 1M tham số. "Mô hình nhỏ nhất vượt X%" không còn là một đóng góp.</li><li><b>Ngôn ngữ gần như không quan trọng trên benchmark tập đóng.</b> CoRP cho thấy nó chỉ quan trọng trên LIBERO-Goal và hơi hại trên RoboTwin; LIBERO-Plus cho thấy VLA phần lớn bỏ qua chỉ dẫn. Tra cứu văn bản tĩnh của MicroVLA là điểm kết hợp lý.</li><li><b>Đặc trưng thị giác chi tiết, tiền huấn luyện, thích nghi theo nhiệm vụ gánh hiệu năng.</b> Các ablation có kiểm soát của CoRP gán 14 đến 20 điểm cho mỗi thuộc tính; ngân sách token cứng nhận biết chỉ dẫn thắng nút thắt biến phân.</li><li><b>Mất mát phụ trợ mua được rất ít.</b> Ablation 2x2 của chính MicroVLA cho thấy tăng cường dữ liệu, chứ không phải số hạng tương phản, khép phần lớn khoảng cách.</li><li><b>Số tham số tách rời khỏi độ trễ.</b> Mô hình 12,4M không nhanh hơn mô hình 48,9M; khi sinh hành động chỉ còn một bước, bộ mã hóa thị giác chiếm phần lớn chi phí mỗi bước, và MINERVA thấy flow matching không hơn hồi quy một lượt ở quy mô tí hon.</li><li><b>LIBERO danh nghĩa che giấu điều quan trọng.</b> LIBERO-Plus kéo mô hình từ 95% xuống dưới 30% khi dịch camera hoặc trạng thái ban đầu; LoopQ cho thấy tổn thất lượng tử hóa vô hình trên LIBERO xuất hiện lại dưới nhiễu loạn; TBD-VLA cho thấy độ trễ suy luận 4 bước cắt thành công từ 97,7% xuống 72,3%.</li>',
+    'notes.assume.h3': 'Các giả định mà những bài về chính sách gọn cùng chia sẻ',
+    'notes.assume.ul': '<li><b>Hiệu quả nghĩa là số tham số</b>, cộng độ trễ trên đầu vào tổng hợp ở GPU máy bàn; chất lượng nghĩa là thành công LIBERO trong phân phối.</li><li><b>Bộ mã hóa phải được tinh chỉnh theo từng bộ nhiệm vụ.</b> CoRP: đóng băng DINOv2 mất 19,8 điểm. Patch Policy báo cáo điều ngược lại với patch dày đặc đóng băng, nhưng chỉ trên LIBERO-Goal. Mâu thuẫn chưa được giải quyết.</li><li><b>Khởi tạo tiền huấn luyện mang tính quyết định.</b> CoRP: ViT-S ngẫu nhiên đạt 78%. MINERVA: mô hình 0,54M huấn luyện từ đầu đạt 95%. Cũng chưa giải quyết; khác biệt nằm đâu đó ở độ phân giải, thiên kiến kiến trúc, ngân sách token hay tăng cường dữ liệu.</li><li><b>Cùng lượng tính toán ở mọi bước điều khiển</b>, chính sách Markov đơn khung, không tái sử dụng theo thời gian ở quy mô tí hon.</li><li><b>Triển khai được đo vòng hở trên máy trạm.</b> "CPU" của MicroVLA là một Threadripper; không có đường int8; chưa chính sách thao tác nào chạy vòng kín trên vi điều khiển.</li>',
+    'notes.open.h3': 'Chế độ còn mở và chế độ đã đông',
+    'notes.open.ul': '<li><b>Mở: điều khiển vòng kín lớp vi điều khiển.</b> Chưa tìm thấy gì. TinyVLM đặt bộ mã hóa chưng cất 892 KB lên MCU chỉ để phát hiện. Câu hỏi nghiên cứu là liệu lợi ích tiền huấn luyện mà CoRP gọi là quyết định có chưng cất được vào bộ mã hóa số nguyên dưới 500K.</li><li><b>Mở: hai mâu thuẫn ở trên</b> (đóng băng so với tinh chỉnh; tiền huấn luyện so với từ đầu), mỗi cái giải quyết được trong vài GPU-ngày bằng một thiết kế 2x2 có kiểm soát.</li><li><b>Đông: huấn luyện nhận biết độ trễ</b> (Action ControlNet, DEFLECT, RTC lúc huấn luyện, RL cho VLA thời gian thực).</li><li><b>Đông: chọn token điều kiện theo hành động</b> (ActPrune, ADP, Action-JND, ActiveVLA) và <b>bộ đệm học được</b> (LAC, gated VLA-Cache, tái sử dụng token thời gian).</li><li><b>Đông: học liên tục trên LIBERO</b> (CLARE, LifelongVLA, CRL-VLA, DMPEL) và <b>độ bền vững góc nhìn</b> (token neo theo kẹp, VLA bền vững góc nhìn không cần hiệu chuẩn).</li>',
+    'tax.h2': 'Phân loại',
+    'tax.p': 'Lĩnh vực 3 đến 6 theo cách đánh số của khảo sát. Lĩnh vực 7 được bổ sung ở đây cho các công trình benchmark và độ bền vững mà khảo sát không lập chỉ mục. Nhấn vào một hình tròn để mở phần phân tích của mục đó và lọc danh sách bài báo theo nó; rê chuột để xem số bài và các mục có chung bài báo.',
+    'tax.hint': 'diện tích = số bài · nhấn để chọn',
+    'gaps.h2': 'Phân tích',
+    'gaps.p': 'Với mỗi lĩnh vực và tiểu mục: bài toán nó đang giải, điều gì còn mở sau các bài báo được lập chỉ mục ở đây, và một hướng nghiên cứu được định cỡ cho ngân sách 2 &times; RTX 3090. Mỗi hướng được viết dưới dạng lật giả định (giả định mà lĩnh vực đang chấp nhận, và thứ thay thế nó), một thí nghiệm đầu tiên, và luận điểm mà nó sẽ chứng minh. Nhấn sao để giữ hướng bạn muốn; danh sách chọn được lưu trong trình duyệt này. Chọn một mục trên bản đồ sẽ thu hẹp danh sách bài báo bên dưới; dùng Bỏ chọn để hoàn tác.',
+    'gaps.type': 'Loại', 'gaps.sort': 'Sắp xếp', 'sort.id': 'theo mục', 'sort.days': 'theo GPU-ngày', 'sort.type': 'theo loại', 'gaps.copy': 'Sao chép danh sách chọn dạng Markdown',
+    'papers.h2': 'Bài báo',
+    'papers.p': 'Mới nhất trước, hiển thị từng trang. Mỗi bài xuất hiện một lần dưới mục chính của nó. Liên quan thứ cấp theo khảo sát được hiển thị bằng thẻ mục bổ sung. Bài được đánh dấu <span class="tag added">bổ sung</span> không nằm trong danh sách khảo sát. Tiêu đề và tóm tắt giữ nguyên tiếng Anh.',
+    'papers.q': 'Tìm theo tiêu đề, tóm tắt, hội nghị', 'papers.allYears': 'Mọi năm', 'src.all': 'Khảo sát và bổ sung', 'src.survey': 'Chỉ khảo sát', 'src.added': 'Chỉ bổ sung', 'papers.code': 'Có mã nguồn', 'papers.clear': 'Xóa bộ lọc',
+    'pager.prev': '&#8249; Trước', 'pager.next': 'Sau &#8250;', 'pager.per': 'Mỗi trang',
+    'footer.note': 'Dữ liệu khảo sát từ Awesome-Efficient-VLA (Guan và cộng sự, "Efficient Vision-Language-Action Models for Embodied Manipulation: A Systematic Survey", arXiv 2510.17111). Các mục bổ sung, phát hiện chính và phân tích được biên soạn tháng 11/2026. Thuộc <a href="https://khanhnd61-vr.github.io/">Havilab</a>.',
+    'footer.source': 'Mã nguồn trên GitHub', 'footer.survey': 'Bài khảo sát'
+  };
+  var EN_HTML = {};
+  document.querySelectorAll('[data-i18n]').forEach(function (el) { EN_HTML[el.getAttribute('data-i18n')] = el.innerHTML; });
+  var EN_ATTR = {};
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(function (el) { EN_ATTR[el.getAttribute('data-i18n-placeholder')] = el.getAttribute('placeholder'); });
+  function applyStatic() {
+    document.documentElement.lang = lang;
+    document.querySelectorAll('[data-i18n]').forEach(function (el) { var k = el.getAttribute('data-i18n'); el.innerHTML = (lang === 'vi' && VI[k] != null) ? VI[k] : EN_HTML[k]; });
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(function (el) { var k = el.getAttribute('data-i18n-placeholder'); el.setAttribute('placeholder', (lang === 'vi' && VI[k] != null) ? VI[k] : EN_ATTR[k]); });
+    document.querySelectorAll('.lang button').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-lang') === lang ? 'true' : 'false'); });
+  }
+  function catName(c) { return (lang === 'vi' && c.name_vi) ? c.name_vi : c.name; }
+  function areaName(a) { return (lang === 'vi' && a.name_vi) ? a.name_vi : a.name; }
+  function anOf(x) { return (lang === 'vi' && x.analysis_vi) ? x.analysis_vi : x.analysis; }
+  function days(d) { return t('about') + ' ' + d + ' ' + (d === 1 ? t('gpuDay') : t('gpuDays')); }
+
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (ch) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[ch]; }); }
 
   // Stats
   var years = {};
   DATA.papers.forEach(function (p) { years[p.date.slice(0, 4)] = (years[p.date.slice(0, 4)] || 0) + 1; });
   var withCode = DATA.papers.filter(function (p) { return p.code; }).length;
-  $('stats').innerHTML = [
-    [DATA.papers.length, 'papers'],
-    [DATA.counts.survey, 'from the survey'],
-    [DATA.counts.added, 'added after it'],
-    [DATA.categories.length, 'categories'],
-    [withCode, 'with code'],
-    [DATA.areas.length + DATA.categories.length, 'research directions']
-  ].map(function (s) { return '<div class="stat"><b>' + s[0] + '</b><span>' + s[1] + '</span></div>'; }).join('');
+  function renderStats() {
+    $('stats').innerHTML = [
+      [DATA.papers.length, t('papers')],
+      [DATA.counts.survey, t('fromSurvey')],
+      [DATA.counts.added, t('addedAfter')],
+      [DATA.categories.length, t('categories')],
+      [withCode, t('withCode')],
+      [DATA.areas.length + DATA.categories.length, t('directions')]
+    ].map(function (s) { return '<div class="stat"><b>' + s[0] + '</b><span>' + s[1] + '</span></div>'; }).join('');
+  }
 
   Object.keys(years).sort().reverse().forEach(function (y) {
     var o = document.createElement('option'); o.value = y; o.textContent = y + ' (' + years[y] + ')'; $('year').appendChild(o);
@@ -448,6 +518,7 @@ button.pill[aria-pressed="true"] { background: var(--pill, var(--ink-soft)); col
     });
   });
   var ROLE = { '3': 'design', '4': 'train', '5': 'run', '6': 'ship', '7': 'measure' };
+  function roleName(id) { return (lang === 'vi' && DATA.roles_vi) ? DATA.roles_vi[id] : ROLE[id]; }
   var COLW = 220, X0 = 118, TOP = 104, NODE_DX = -62, W = X0 + COLW * (DATA.areas.length - 1) + 130;
   function radius(n) { return 9 + 4.2 * Math.sqrt(n); }
   function wrapWords(text, max) {
@@ -472,44 +543,44 @@ button.pill[aria-pressed="true"] { background: var(--pill, var(--ink-soft)); col
     if (A.area === B.area) { var bow = Math.min(70, Math.abs(A.y - B.y) * 0.6 + 20); return 'M' + A.x + ' ' + A.y + ' C' + (A.x - bow) + ' ' + A.y + ' ' + (B.x - bow) + ' ' + B.y + ' ' + B.x + ' ' + B.y; }
     var mx = (A.x + B.x) / 2; return 'M' + A.x + ' ' + A.y + ' C' + mx + ' ' + A.y + ' ' + mx + ' ' + B.y + ' ' + B.x + ' ' + B.y;
   }
+  var map = $('map');
+  function buildMap() {
   var svg = [];
   DATA.areas.forEach(function (a, i) {
     var cx = X0 + i * COLW + NODE_DX, col = 'var(--a' + a.id + ')';
     var cats = DATA.categories.filter(function (c) { return c.area === a.id; });
     var total = cats.reduce(function (n, c) { return n + (counts[c.id] || 0); }, 0);
     svg.push('<line class="spine" x1="' + cx + '" y1="' + (TOP - 4) + '" x2="' + cx + '" y2="' + colEnd[a.id] + '"/>');
-    svg.push('<text class="hdr-eyebrow" x="' + cx + '" y="24" fill="' + col + '">Area ' + a.id + ' · ' + ROLE[a.id] + '</text>');
-    wrapWords(a.name, 24).forEach(function (ln, k) { svg.push('<text class="hdr-name" x="' + cx + '" y="' + (46 + k * 17) + '">' + esc(ln) + '</text>'); });
-    svg.push('<text class="hdr-n" x="' + cx + '" y="' + 92 + '">' + total + ' papers</text>');
+    var eyebrow = t('area') + ' ' + a.id + ' · ' + roleName(a.id);
+    svg.push('<text class="hdr-eyebrow" x="' + cx + '" y="24" fill="' + col + '">' + eyebrow + '</text>');
+    wrapWords(areaName(a), 24).forEach(function (ln, k) { svg.push('<text class="hdr-name" x="' + cx + '" y="' + (46 + k * 17) + '">' + esc(ln) + '</text>'); });
+    svg.push('<text class="hdr-n" x="' + cx + '" y="' + 92 + '">' + total + ' ' + t('papers') + '</text>');
     if (i < DATA.areas.length - 1) {
-      var ax = cx + 150, ax2 = cx + COLW - 12, ay = 20;
+      var ax = cx + Math.max(150, Math.round(eyebrow.length * 7.2) + 10), ax2 = cx + COLW - 12, ay = 20;
       svg.push('<path class="arrow" d="M' + ax + ' ' + ay + ' H' + ax2 + '"/><path class="arrow-head" d="M' + ax2 + ' ' + ay + ' l-6 -3.5 v7 z"/>');
     }
   });
   Object.keys(pairs).forEach(function (k) {
     var ab = k.split('|'), w = pairs[k];
-    svg.push('<path class="link" data-a="' + ab[0] + '" data-b="' + ab[1] + '" stroke-width="' + (1.2 + w * 1.3) + '" d="' + linkPath(ab[0], ab[1]) + '"><title>' + w + (w === 1 ? ' paper' : ' papers') + ' tagged with both ' + ab[0] + ' and ' + ab[1] + '</title></path>');
+    svg.push('<path class="link" data-a="' + ab[0] + '" data-b="' + ab[1] + '" stroke-width="' + (1.2 + w * 1.3) + '" d="' + linkPath(ab[0], ab[1]) + '"><title>' + w + ' ' + (w === 1 ? t('paper') : t('papers')) + ' ' + t('taggedBoth') + ' ' + ab[0] + ' + ' + ab[1] + '</title></path>');
   });
   DATA.categories.forEach(function (c) {
     var P = pos[c.id], col = 'var(--a' + P.area + ')', n = counts[c.id] || 0;
     var shared = Object.keys(pairs).filter(function (k) { return k.split('|').indexOf(c.id) !== -1; })
       .map(function (k) { var o = k.split('|'); return (o[0] === c.id ? o[1] : o[0]) + ' (' + pairs[k] + ')'; });
-    var lines = wrapWords(c.name, 17), lx = P.x + P.r + 9, ly = P.y - ((lines.length - 1) * 7.5);
+    var lines = wrapWords(catName(c), 17), lx = P.x + P.r + 9, ly = P.y - ((lines.length - 1) * 7.5);
     var label = '<text class="lbl" x="' + lx + '" y="' + ly + '" dominant-baseline="central">' + lines.map(function (ln, k) {
       return '<tspan x="' + lx + '" dy="' + (k ? 15 : 0) + '">' + (k ? '' : '<tspan class="id">' + c.id + '</tspan> ') + esc(ln) + '</tspan>';
     }).join('') + '</text>';
-    svg.push('<g class="node" data-cat="' + c.id + '" role="button" tabindex="0" aria-pressed="false" aria-label="' + c.id + ' ' + esc(c.name) + ', ' + n + ' papers">' +
-      '<title>' + c.id + ' ' + esc(c.name) + ' — ' + n + ' primary papers' + (shared.length ? '. Shares papers with ' + shared.join(', ') : '') + (c.analysis ? '.\nDirection: ' + esc(c.analysis.direction.title) : '') + '</title>' +
+    svg.push('<g class="node" data-cat="' + c.id + '" role="button" tabindex="0" aria-pressed="false" aria-label="' + c.id + ' ' + esc(catName(c)) + ', ' + n + ' ' + t('papers') + '">' +
+      '<title>' + c.id + ' ' + esc(catName(c)) + ' — ' + n + ' ' + t('primary') + (shared.length ? '. ' + t('shares') + ' ' + shared.join(', ') : '') + (anOf(c) ? '.\n' + t('direction') + ': ' + esc(anOf(c).direction.title) : '') + '</title>' +
       '<circle cx="' + P.x + '" cy="' + P.y + '" r="' + P.r + '" stroke="' + col + '"/>' +
       '<text class="n" x="' + P.x + '" y="' + P.y + '">' + n + '</text>' + label + '</g>');
   });
-  var map = $('map');
   map.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
   map.innerHTML = svg.join('');
-  $('legend').innerHTML = '<span><i></i>circle area = primary papers in the category</span>' +
-    '<span><i class="l"></i>link width = papers the survey tags with both categories</span>' +
-    '<span><i class="a"></i>columns follow the VLA pipeline, left to right</span>' +
-    '<span>click a circle to open its problems, gaps and direction</span>';
+  $('legend').innerHTML = '<span><i></i>' + t('lg1') + '</span><span><i class="l"></i>' + t('lg2') + '</span><span><i class="a"></i>' + t('lg3') + '</span><span>' + t('lg4') + '</span>';
+  }
   function mapPick(id) { state.cats = new Set([id]); refilter(); openGap(id, true); }
   map.addEventListener('click', function (e) { var g = e.target.closest('.node'); if (g) mapPick(g.getAttribute('data-cat')); });
   map.addEventListener('keydown', function (e) {
@@ -544,56 +615,59 @@ button.pill[aria-pressed="true"] { background: var(--pill, var(--ink-soft)); col
   var shortlist = loadShort();
   var gaps = { tab: 'all', types: new Set(), sort: 'id' };
   var entries = [], entryById = {};
-  DATA.areas.forEach(function (a) {
-    if (!a.analysis) return;
-    var e = { id: 'A' + a.id, kind: 'area', areaId: a.id, label: 'Area ' + a.id, name: a.name, an: a.analysis, n: 0 };
-    entries.push(e); entryById[e.id] = e;
-  });
-  DATA.categories.forEach(function (c) {
-    if (!c.analysis) return;
-    var e = { id: c.id, kind: 'cat', areaId: c.area, label: c.id, name: c.name, an: c.analysis, n: counts[c.id] || 0 };
-    entries.push(e); entryById[e.id] = e;
-  });
-  entries.forEach(function (e) { e.n = e.kind === 'area' ? DATA.categories.filter(function (c) { return c.area === e.areaId; }).reduce(function (n, c) { return n + (counts[c.id] || 0); }, 0) : e.n; });
+  function buildEntries() {
+    entries = []; entryById = {};
+    DATA.areas.forEach(function (a) {
+      if (!a.analysis) return;
+      var e = { id: 'A' + a.id, kind: 'area', areaId: a.id, label: t('area') + ' ' + a.id, name: areaName(a), an: anOf(a), n: 0 };
+      entries.push(e); entryById[e.id] = e;
+    });
+    DATA.categories.forEach(function (c) {
+      if (!c.analysis) return;
+      var e = { id: c.id, kind: 'cat', areaId: c.area, label: c.id, name: catName(c), an: anOf(c), n: counts[c.id] || 0 };
+      entries.push(e); entryById[e.id] = e;
+    });
+    entries.forEach(function (e) { e.n = e.kind === 'area' ? DATA.categories.filter(function (c) { return c.area === e.areaId; }).reduce(function (n, c) { return n + (counts[c.id] || 0); }, 0) : e.n; });
+  }
 
-  function pill(type) { return '<span class="pill ' + type + '">' + type + '</span>'; }
-  function starBtn(id) { return '<button type="button" class="star" data-star="' + id + '" aria-pressed="' + (shortlist.has(id) ? 'true' : 'false') + '" title="Add to shortlist" aria-label="Shortlist ' + id + '">' + (shortlist.has(id) ? '&#9733;' : '&#9734;') + '</button>'; }
+  function pill(type) { return '<span class="pill ' + type + '">' + t(type) + '</span>'; }
+  function starBtn(id) { return '<button type="button" class="star" data-star="' + id + '" aria-pressed="' + (shortlist.has(id) ? 'true' : 'false') + '" title="' + t('addShort') + '" aria-label="' + t('shortlist') + ' ' + id + '">' + (shortlist.has(id) ? '&#9733;' : '&#9734;') + '</button>'; }
   function dirHTML(e) {
     var d = e.an.direction;
-    return '<div class="dir"><h4>Proposed direction</h4><div class="dtitle">' + esc(d.title) + '</div>' +
-      '<div class="meta">' + pill(d.type) + '<span class="days">about ' + d.days + ' GPU-day' + (d.days === 1 ? '' : 's') + '</span>' + starBtn(e.id) + '</div>' +
-      '<dl><dt>Bit</dt><dd>' + esc(d.bit) + '</dd><dt>Flip</dt><dd class="flip">' + esc(d.flip) + '</dd><dt>Claim</dt><dd>' + esc(d.claim) + '</dd><dt>Cost</dt><dd>' + esc(d.cost) + '</dd><dt>Fit</dt><dd>' + esc(d.fit) + '</dd><dt>Risk</dt><dd>' + esc(d.risk) + '</dd></dl>' +
-      '<h4>First experiments</h4><ol>' + d.plan.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ol></div>';
+    return '<div class="dir"><h4>' + t('proposed') + '</h4><div class="dtitle">' + esc(d.title) + '</div>' +
+      '<div class="meta">' + pill(d.type) + '<span class="days">' + days(d.days) + '</span>' + starBtn(e.id) + '</div>' +
+      '<dl><dt>' + t('bit') + '</dt><dd>' + esc(d.bit) + '</dd><dt>' + t('flip') + '</dt><dd class="flip">' + esc(d.flip) + '</dd><dt>' + t('claim') + '</dt><dd>' + esc(d.claim) + '</dd><dt>' + t('cost') + '</dt><dd>' + esc(d.cost) + '</dd><dt>' + t('fit') + '</dt><dd>' + esc(d.fit) + '</dd><dt>' + t('risk') + '</dt><dd>' + esc(d.risk) + '</dd></dl>' +
+      '<h4>' + t('first') + '</h4><ol>' + d.plan.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ol></div>';
   }
   function problemGapsHTML(e) {
-    return '<div><h4>Problem</h4><p>' + esc(e.an.problem) + '</p></div>' +
-      '<div><h4>Open gaps</h4><ul>' + e.an.gaps.map(function (g) { return '<li>' + esc(g) + '</li>'; }).join('') + '</ul></div>';
+    return '<div><h4>' + t('problem') + '</h4><p>' + esc(e.an.problem) + '</p></div>' +
+      '<div><h4>' + t('gaps') + '</h4><ul>' + e.an.gaps.map(function (g) { return '<li>' + esc(g) + '</li>'; }).join('') + '</ul></div>';
   }
   function keyPapersHTML(e) {
     if (!e.an.key || !e.an.key.length) return '';
-    return '<span class="lbl">Key papers</span>' + e.an.key.map(function (i) {
+    return '<span class="lbl">' + t('keyPapers') + '</span>' + e.an.key.map(function (i) {
       var p = DATA.papers[i]; if (!p) return '';
       var short = p.title.length > 48 ? p.title.slice(0, 46) + '…' : p.title;
       return p.url ? '<a class="kp" href="' + esc(p.url) + '" target="_blank" rel="noopener" title="' + esc(p.title) + '">' + esc(short) + '</a>' : '<span class="kp" title="' + esc(p.title) + '">' + esc(short) + '</span>';
     }).join('');
   }
   function areaCardHTML(e) {
-    return '<div class="area-card" style="--area-color: var(--a' + e.areaId + ')" id="gap-' + e.id + '"><div><div class="role">Area ' + e.areaId + ' · ' + ROLE_NAME[e.areaId] + ' · ' + e.n + ' papers</div><h3>' + esc(e.name) + '</h3></div>' +
+    return '<div class="area-card" style="--area-color: var(--a' + e.areaId + ')" id="gap-' + e.id + '"><div><div class="role">' + t('area') + ' ' + e.areaId + ' · ' + roleName(e.areaId) + ' · ' + e.n + ' ' + t('papers') + '</div><h3>' + esc(e.name) + '</h3></div>' +
       '<div class="cols3">' + problemGapsHTML(e) + dirHTML(e) + '</div></div>';
   }
   function catCardHTML(e) {
     var d = e.an.direction;
     return '<details class="gcard" style="--area-color: var(--a' + e.areaId + ')" id="gap-' + e.id + '" data-id="' + e.id + '"><summary>' +
-      '<span class="gid">' + e.id + '</span><span class="gname">' + esc(e.name) + '</span><span class="gn">' + e.n + ' papers</span>' +
-      '<span class="gdir"><span class="t">' + esc(d.title) + '</span>' + pill(d.type) + '<span class="days">about ' + d.days + ' GPU-day' + (d.days === 1 ? '' : 's') + '</span></span></summary>' +
+      '<span class="gid">' + e.id + '</span><span class="gname">' + esc(e.name) + '</span><span class="gn">' + e.n + ' ' + t('papers') + '</span>' +
+      '<span class="gdir"><span class="t">' + esc(d.title) + '</span>' + pill(d.type) + '<span class="days">' + days(d.days) + '</span></span></summary>' +
       '<div class="gbody"><div class="cols3">' + problemGapsHTML(e) + dirHTML(e) + '</div>' +
-      '<div class="gfoot">' + keyPapersHTML(e) + '<button type="button" class="btn show-papers" data-cat="' + e.id + '">Show the ' + e.n + ' papers</button></div></div></details>';
+      '<div class="gfoot">' + keyPapersHTML(e) + '<button type="button" class="btn show-papers" data-cat="' + e.id + '">' + t('showPapers', e.n) + '</button></div></div></details>';
   }
   function boardCardHTML(e) {
     var d = e.an.direction;
-    return '<article class="bcard" style="--area-color: var(--a' + e.areaId + ')"><div class="brow"><span class="gid mono" style="color:var(--area-color);font-size:12px">' + e.label + '</span>' + pill(d.type) + '<span class="days mono" style="font-size:11.5px;color:var(--muted)">about ' + d.days + ' GPU-day' + (d.days === 1 ? '' : 's') + '</span>' + starBtn(e.id) + '</div>' +
-      '<h4>' + esc(d.title) + '</h4><div class="where">' + esc(e.name) + (e.kind === 'cat' ? ' · ' + e.n + ' papers' : ' · cross-cutting') + '</div><p class="flip">' + esc(d.flip) + '</p>' +
-      '<button type="button" class="btn open-gap" data-id="' + e.id + '">Problem, gaps and plan</button></article>';
+    return '<article class="bcard" style="--area-color: var(--a' + e.areaId + ')"><div class="brow"><span class="gid mono" style="color:var(--area-color);font-size:12px">' + e.label + '</span>' + pill(d.type) + '<span class="days mono" style="font-size:11.5px;color:var(--muted)">' + days(d.days) + '</span>' + starBtn(e.id) + '</div>' +
+      '<h4>' + esc(d.title) + '</h4><div class="where">' + esc(e.name) + (e.kind === 'cat' ? ' · ' + e.n + ' ' + t('papers') : ' · ' + t('cross')) + '</div><p class="flip">' + esc(d.flip) + '</p>' +
+      '<button type="button" class="btn open-gap" data-id="' + e.id + '">' + t('openCard') + '</button></article>';
   }
   function visibleEntries() {
     var list = entries.filter(function (e) { return !gaps.types.size || gaps.types.has(e.an.direction.type); });
@@ -608,13 +682,13 @@ button.pill[aria-pressed="true"] { background: var(--pill, var(--ink-soft)); col
     var list = visibleEntries(), html;
     if (gaps.tab === 'all' || gaps.tab === 'short') {
       html = list.length ? '<div class="board">' + list.map(boardCardHTML).join('') + '</div>' :
-        '<div class="empty">' + (gaps.tab === 'short' ? 'Nothing shortlisted yet. Star a direction to keep it here.' : 'No directions match this type filter.') + '</div>';
+        '<div class="empty">' + (gaps.tab === 'short' ? t('emptyShort') : t('emptyType')) + '</div>';
     } else {
-      html = list.map(function (e) { return e.kind === 'area' ? areaCardHTML(e) : catCardHTML(e); }).join('') || '<div class="empty">No directions match this type filter.</div>';
+      html = list.map(function (e) { return e.kind === 'area' ? areaCardHTML(e) : catCardHTML(e); }).join('') || '<div class="empty">' + t('emptyType') + '</div>';
     }
     $('gap-body').innerHTML = html;
     document.querySelectorAll('#area-tabs .tab').forEach(function (t) { t.setAttribute('aria-selected', t.getAttribute('data-tab') === gaps.tab ? 'true' : 'false'); });
-    $('short-count').textContent = shortlist.size ? shortlist.size + ' shortlisted' : '';
+    $('short-count').textContent = shortlist.size ? t('shortlisted', shortlist.size) : '';
   }
   function openGap(id, scroll) {
     var e = entryById[id]; if (!e) return;
@@ -625,10 +699,12 @@ button.pill[aria-pressed="true"] { background: var(--pill, var(--ink-soft)); col
     if (el.tagName === 'DETAILS') el.open = true;
     if (scroll) el.scrollIntoView({ block: 'start' });
   }
-  $('area-tabs').innerHTML = '<button type="button" class="tab" role="tab" data-tab="all">All directions</button>' +
-    DATA.areas.filter(function (a) { return a.analysis; }).map(function (a) { return '<button type="button" class="tab" role="tab" data-tab="' + a.id + '" style="--tab-color: var(--a' + a.id + ')"><span class="dot"></span>Area ' + a.id + ' · ' + ROLE_NAME[a.id] + '</button>'; }).join('') +
-    '<button type="button" class="tab" role="tab" data-tab="short">&#9733; Shortlist</button>';
-  $('type-filters').innerHTML += TYPES.map(function (t) { return '<button type="button" class="pill ' + t + '" data-type="' + t + '" aria-pressed="false">' + t + '</button>'; }).join('');
+  function renderTabs() {
+    $('area-tabs').innerHTML = '<button type="button" class="tab" role="tab" data-tab="all">' + t('allDir') + '</button>' +
+      DATA.areas.filter(function (a) { return a.analysis; }).map(function (a) { return '<button type="button" class="tab" role="tab" data-tab="' + a.id + '" style="--tab-color: var(--a' + a.id + ')"><span class="dot"></span>' + t('area') + ' ' + a.id + ' · ' + roleName(a.id) + '</button>'; }).join('') +
+      '<button type="button" class="tab" role="tab" data-tab="short">&#9733; ' + t('shortlist') + '</button>';
+    $('type-filters').innerHTML = '<span>' + (lang === 'vi' ? VI['gaps.type'] : EN_HTML['gaps.type']) + '</span>' + TYPES.map(function (ty) { return '<button type="button" class="pill ' + ty + '" data-type="' + ty + '" aria-pressed="' + (gaps.types.has(ty) ? 'true' : 'false') + '">' + t(ty) + '</button>'; }).join('');
+  }
   $('area-tabs').addEventListener('click', function (e) { var t = e.target.closest('.tab'); if (t) { gaps.tab = t.getAttribute('data-tab'); renderGaps(); } });
   $('type-filters').addEventListener('click', function (e) {
     var b = e.target.closest('.pill'); if (!b) return;
@@ -644,7 +720,7 @@ button.pill[aria-pressed="true"] { background: var(--pill, var(--ink-soft)); col
       if (shortlist.has(id)) shortlist.delete(id); else shortlist.add(id);
       saveShort();
       document.querySelectorAll('.star[data-star="' + id + '"]').forEach(function (b) { b.setAttribute('aria-pressed', shortlist.has(id) ? 'true' : 'false'); b.innerHTML = shortlist.has(id) ? '&#9733;' : '&#9734;'; });
-      $('short-count').textContent = shortlist.size ? shortlist.size + ' shortlisted' : '';
+      $('short-count').textContent = shortlist.size ? t('shortlisted', shortlist.size) : '';
       if (gaps.tab === 'short') renderGaps();
       return;
     }
@@ -654,19 +730,16 @@ button.pill[aria-pressed="true"] { background: var(--pill, var(--ink-soft)); col
   $('short-copy').addEventListener('click', function () {
     var box = $('copy-area');
     var ids = entries.filter(function (e) { return shortlist.has(e.id); });
-    if (!ids.length) { box.hidden = false; box.innerHTML = '<span class="toast">Nothing shortlisted yet.</span>'; return; }
-    var md = '## Efficient VLA Atlas shortlist\n\n' + ids.map(function (e) {
+    if (!ids.length) { box.hidden = false; box.innerHTML = '<span class="toast">' + t('nothingShort') + '</span>'; return; }
+    var md = '## ' + t('mdTitle') + '\n\n' + ids.map(function (e) {
       var d = e.an.direction;
-      return '### ' + e.label + ' ' + e.name + '\n**' + d.title + '** (' + d.type + ', about ' + d.days + ' GPU-days)\n\n- Bit: ' + d.bit + '\n- Flip: ' + d.flip + '\n- Claim: ' + d.claim + '\n- First experiments:\n' + d.plan.map(function (x) { return '  1. ' + x; }).join('\n') + '\n';
+      return '### ' + e.label + ' ' + e.name + '\n**' + d.title + '** (' + t(d.type) + ', ' + days(d.days) + ')\n\n- ' + t('bit') + ': ' + d.bit + '\n- ' + t('flip') + ': ' + d.flip + '\n- ' + t('claim') + ': ' + d.claim + '\n- ' + t('first') + ':\n' + d.plan.map(function (x) { return '  1. ' + x; }).join('\n') + '\n';
     }).join('\n');
-    function fallback() { box.hidden = false; box.innerHTML = '<textarea class="copybox" readonly aria-label="Shortlist as Markdown"></textarea>'; var ta = box.querySelector('textarea'); ta.value = md; ta.focus(); ta.select(); }
+    function fallback() { box.hidden = false; box.innerHTML = '<textarea class="copybox" readonly aria-label="' + t('mdCopy') + '"></textarea>'; var ta = box.querySelector('textarea'); ta.value = md; ta.focus(); ta.select(); }
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(md).then(function () { box.hidden = false; box.innerHTML = '<span class="toast">Copied ' + ids.length + ' direction' + (ids.length === 1 ? '' : 's') + ' as Markdown.</span>'; }, fallback);
+      navigator.clipboard.writeText(md).then(function () { box.hidden = false; box.innerHTML = '<span class="toast">' + t('copied', ids.length) + '</span>'; }, fallback);
     } else fallback();
   });
-  renderGaps();
-  var m = location.hash.match(/^#gap-(A\d|\d\.\d)$/);
-  if (m) { openGap(m[1], true); }
 
   // Filtering
   function matches(p) {
@@ -675,7 +748,7 @@ button.pill[aria-pressed="true"] { background: var(--pill, var(--ink-soft)); col
     if (state.source !== 'all' && p.source !== state.source) return false;
     if (state.code && !p.code) return false;
     if (state.q) {
-      var hay = (p.title + ' ' + p.blurb + ' ' + (p.venue || '') + ' ' + (p.note || '') + ' ' + (catById[p.category] || {}).name).toLowerCase();
+      var hay = (p.title + ' ' + p.blurb + ' ' + (p.venue || '') + ' ' + (p.note || '') + ' ' + (catById[p.category] || {}).name + ' ' + ((catById[p.category] || {}).name_vi || '')).toLowerCase();
       return state.q.split(/\s+/).every(function (w) { return hay.indexOf(w) !== -1; });
     }
     return true;
@@ -685,14 +758,14 @@ button.pill[aria-pressed="true"] { background: var(--pill, var(--ink-soft)); col
     var cat = catById[p.category];
     var title = p.url ? '<a href="' + esc(p.url) + '" target="_blank" rel="noopener">' + esc(p.title) + '</a>' : '<span class="nolink">' + esc(p.title) + '</span>';
     var tags = ['<span class="tag mono">' + p.date + '</span>'];
-    tags.push('<button type="button" class="tag cat" data-cat="' + cat.id + '">' + cat.id + ' ' + esc(cat.name) + '</button>');
-    p.secondary.forEach(function (s) { if (catById[s]) tags.push('<button type="button" class="tag cat" data-cat="' + s + '" title="secondary relevance">also ' + s + '</button>'); });
+    tags.push('<button type="button" class="tag cat" data-cat="' + cat.id + '">' + cat.id + ' ' + esc(catName(cat)) + '</button>');
+    p.secondary.forEach(function (s) { if (catById[s]) tags.push('<button type="button" class="tag cat" data-cat="' + s + '" title="' + t('secondary') + '">' + t('also') + ' ' + s + '</button>'); });
     if (p.venue) tags.push('<span class="tag">' + esc(p.venue) + '</span>');
-    if (p.code) tags.push('<span class="tag"><a href="' + esc(p.code) + '" target="_blank" rel="noopener">code</a></span>');
-    if (p.project) tags.push('<span class="tag"><a href="' + esc(p.project) + '" target="_blank" rel="noopener">project</a></span>');
-    if (p.source === 'added') tags.push('<span class="tag added">added</span>');
+    if (p.code) tags.push('<span class="tag"><a href="' + esc(p.code) + '" target="_blank" rel="noopener">' + t('code') + '</a></span>');
+    if (p.project) tags.push('<span class="tag"><a href="' + esc(p.project) + '" target="_blank" rel="noopener">' + t('project') + '</a></span>');
+    if (p.source === 'added') tags.push('<span class="tag added">' + t('added') + '</span>');
     return '<article class="paper"><div class="title">' + title + '</div><div class="blurb">' + esc(p.blurb) + '</div>' +
-      (p.note ? '<div class="note">' + esc(p.note) + '</div>' : '') + '<div class="row">' + tags.join('') + '</div></article>';
+      (p.note ? '<div class="note" data-label="' + t('note') + '">' + esc(p.note) + '</div>' : '') + '<div class="row">' + tags.join('') + '</div></article>';
   }
 
   function render() {
@@ -701,18 +774,18 @@ button.pill[aria-pressed="true"] { background: var(--pill, var(--ink-soft)); col
     if (state.page >= pages) state.page = pages - 1;
     if (state.page < 0) state.page = 0;
     var start = state.page * state.per, slice = shown.slice(start, start + state.per);
-    $('list').innerHTML = slice.length ? slice.map(paperHTML).join('') : '<div class="empty">No papers match. Clear a filter or try a shorter search.</div>';
-    $('count').textContent = shown.length === DATA.papers.length ? DATA.papers.length + ' papers' : shown.length + ' of ' + DATA.papers.length;
-    $('pageinfo').textContent = shown.length ? (start + 1) + '\u2013' + (start + slice.length) + ' of ' + shown.length + ' \u00b7 page ' + (state.page + 1) + ' of ' + pages : '0 of 0';
+    $('list').innerHTML = slice.length ? slice.map(paperHTML).join('') : '<div class="empty">' + t('noPapers') + '</div>';
+    $('count').textContent = shown.length === DATA.papers.length ? DATA.papers.length + ' ' + t('papers') : shown.length + ' ' + t('of') + ' ' + DATA.papers.length;
+    $('pageinfo').textContent = shown.length ? (start + 1) + '\u2013' + (start + slice.length) + ' ' + t('of') + ' ' + shown.length + ' \u00b7 ' + t('page') + ' ' + (state.page + 1) + ' ' + t('of') + ' ' + pages : '0 ' + t('of') + ' 0';
     $('prev').disabled = state.page === 0; $('next').disabled = state.page >= pages - 1;
     $('pager').hidden = shown.length <= state.per;
-    var selHTML = state.cats.size ? '<span>Selected</span>' + Array.from(state.cats).sort().map(function (id) {
-      return '<button type="button" class="chip" data-cat="' + id + '">' + id + ' ' + esc(catById[id].name) + ' <span aria-hidden="true">\u00d7</span></button>';
-    }).join('') + '<button type="button" class="btn clear-sel">Clear selection</button>' : '';
+    var selHTML = state.cats.size ? '<span>' + t('selected') + '</span>' + Array.from(state.cats).sort().map(function (id) {
+      return '<button type="button" class="chip" data-cat="' + id + '">' + id + ' ' + esc(catName(catById[id])) + ' <span aria-hidden="true">\u00d7</span></button>';
+    }).join('') + '<button type="button" class="btn clear-sel">' + t('clearSel') + '</button>' : '';
     [$('selbar'), $('selbar2')].forEach(function (el) { el.hidden = !state.cats.size; el.innerHTML = selHTML; });
     paintMap();
     $('active').innerHTML = Array.from(state.cats).sort().map(function (id) {
-      return '<button type="button" class="chip" data-cat="' + id + '">' + id + ' ' + esc(catById[id].name) + ' <span aria-hidden="true">×</span></button>';
+      return '<button type="button" class="chip" data-cat="' + id + '">' + id + ' ' + esc(catName(catById[id])) + ' <span aria-hidden="true">×</span></button>';
     }).join('');
   }
 
@@ -736,7 +809,12 @@ button.pill[aria-pressed="true"] { background: var(--pill, var(--ink-soft)); col
     $('q').value = ''; $('year').value = 'all'; $('source').value = 'all'; $('code').checked = false; render();
   });
 
-  render();
+  function renderAll() { applyStatic(); renderStats(); buildMap(); buildEntries(); renderTabs(); renderGaps(); render(); }
+  function setLang(l) { lang = l; try { localStorage.setItem(LANG_KEY, l); } catch (e) {} renderAll(); }
+  document.querySelector('.lang').addEventListener('click', function (e) { var b = e.target.closest('button'); if (b && b.getAttribute('data-lang') !== lang) setLang(b.getAttribute('data-lang')); });
+  renderAll();
+  var m = location.hash.match(/^#gap-(A\d|\d\.\d)$/);
+  if (m) { openGap(m[1], true); }
 })();
 </script>
 </body>

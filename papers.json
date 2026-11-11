@@ -3,6 +3,7 @@
   {
    "id": "3",
    "name": "Efficient Architectures and Model Compression",
+   "name_vi": "Kiến trúc hiệu quả và nén mô hình",
    "analysis": {
     "problem": "VLAs inherit billion-parameter VLM backbones and multi-step diffusion heads that were sized for chat, so per-step cost, memory and training cost are set by the backbone rather than by the control task. The area asks how much of that backbone a manipulation policy actually needs, and how to keep the useful part while shrinking everything else.",
     "gaps": [
@@ -26,11 +27,36 @@
      "risk": "A benchmark contribution, not a mechanism. Use it as the evaluation spine for the category directions below rather than as a standalone paper.",
      "days": 2
     }
+   },
+   "analysis_vi": {
+    "problem": "Các VLA kế thừa backbone VLM hàng tỷ tham số và đầu khuếch tán nhiều bước vốn được thiết kế cho chat, nên chi phí mỗi bước, bộ nhớ và chi phí huấn luyện do backbone quyết định chứ không phải do bài toán điều khiển. Lĩnh vực này hỏi: một chính sách thao tác thực sự cần bao nhiêu phần của backbone đó, và làm sao giữ phần hữu ích trong khi thu nhỏ mọi thứ còn lại.",
+    "gaps": [
+     "Ba tiểu mục tối ưu ba trục khác nhau (số tham số ở 3.1, tần số điều khiển ở 3.2, số bit ở 3.3) và hầu như không bao giờ báo cáo trên một trục chung như độ trễ mỗi bước đo thực trên thiết bị đích.",
+     "Gần như mọi kết quả đều trên LIBERO, nơi 0,54M tham số đã đạt 95% (MINERVA). Các tuyên bố về kiến trúc chưa được kiểm chứng ở chế độ mà dung lượng mô hình thực sự quan trọng: chuỗi dài, hai tay, tiếp xúc nhiều, hay cảnh bị nhiễu loạn (LIBERO-Plus, LIBERO-PRO).",
+     "Chưa có kiến trúc gọn nhẹ nào được đánh giá độ bền vững. LoopQ cho thấy những tổn thất vô hình trên LIBERO danh nghĩa xuất hiện trở lại dưới nhiễu loạn, và điều đó rất có thể cũng đúng với mô hình nhỏ."
+    ],
+    "direction": {
+     "title": "Đặt mọi kiến trúc lên ba trục: độ trễ đo thực trên thiết bị đích, bộ nhớ, và tỷ lệ thành công trên benchmark có nhiễu loạn",
+     "type": "benchmark",
+     "bit": "Các bài về kiến trúc cạnh tranh bằng số tham số và tỷ lệ thành công LIBERO danh nghĩa.",
+     "flip": "Số tham số đã hết khả năng phân biệt từ 2026; các trục còn mở là độ trễ đo thực theo lớp thiết bị và tỷ lệ thành công dưới nhiễu loạn. Một bảng xếp hạng mô hình gọn trên các trục đó sẽ sắp xếp lại cả lĩnh vực.",
+     "plan": [
+      "Đánh giá lại các checkpoint gọn đã công bố (SmolVLA, Evo-1, lớp MicroVLA, lớp CoRP, lớp MINERVA) trên LIBERO-Plus với độ trễ mỗi lần gọi đo trên 3090, CPU máy bàn và thiết bị lớp Jetson.",
+      "Báo cáo mặt Pareto giữa tỷ lệ thành công dưới nhiễu loạn và mili-giây đo thực, không phải FLOPs.",
+      "Đưa các dạng thất bại tìm được vào hướng vi điều khiển ở 3.1."
+     ],
+     "claim": "x > y: thứ hạng các kiến trúc gọn theo độ trễ đo thực và thành công dưới nhiễu loạn khác với thứ hạng theo số tham số và LIBERO danh nghĩa.",
+     "cost": "Chỉ đánh giá, không huấn luyện: khoảng 2 GPU-ngày rollout.",
+     "fit": "vla.cpp là bộ công cụ tự nhiên vì chạy được các checkpoint này trên CPU và GPU với cùng số học.",
+     "risk": "Đây là đóng góp dạng benchmark, không phải cơ chế. Hãy dùng nó làm xương sống đánh giá cho các hướng ở từng tiểu mục bên dưới thay vì làm bài báo riêng.",
+     "days": 2
+    }
    }
   },
   {
    "id": "4",
    "name": "Efficient Training and Adaptation",
+   "name_vi": "Huấn luyện và thích nghi hiệu quả",
    "analysis": {
     "problem": "Training a VLA costs thousands of GPU-hours and millions of demonstrations, and adapting one costs new data per task. The area asks how to reach the same policy with fewer demonstrations, fewer rollouts, or fewer trainable parameters.",
     "gaps": [
@@ -53,11 +79,35 @@
      "risk": "Umbrella framing; the concrete versions are in 4.2 and 5.5.",
      "days": 1
     }
+   },
+   "analysis_vi": {
+    "problem": "Huấn luyện một VLA tốn hàng nghìn GPU-giờ và hàng triệu demo, và thích nghi nó tốn dữ liệu mới cho mỗi nhiệm vụ. Lĩnh vực này hỏi làm sao đạt cùng chính sách với ít demo hơn, ít rollout hơn, hoặc ít tham số huấn luyện hơn.",
+    "gaps": [
+     "Công thức huấn luyện bỏ qua điều kiện mà chính sách sẽ chạy: độ trễ suy luận, ngân sách tính toán, ngữ cảnh cũ. Chỉ ba bài trong toàn bộ chỉ mục huấn luyện với độ trễ mô phỏng.",
+     "Mọi thứ được kiểm chứng trên backbone lớn. Với chính sách gọn, nơi gradient rẻ và rollout chiếm chi phí, các đánh đổi khác hẳn và chưa được khám phá.",
+     "Lợi ích về hiệu quả dữ liệu được đo bằng thành công danh nghĩa, mà LIBERO-PRO cho thấy có thể chỉ là ghi nhớ."
+    ],
+    "direction": {
+     "title": "Huấn luyện cho vòng lặp mà bạn sẽ chạy: điều kiện triển khai làm biến huấn luyện",
+     "type": "mechanism",
+     "bit": "Huấn luyện tối ưu khả năng hành động trên demo; độ trễ, ngân sách và độ cũ là vấn đề lúc suy luận.",
+     "flip": "Lấy mẫu độ trễ, ngân sách tính toán và tuổi ngữ cảnh trong huấn luyện và điều kiện chính sách theo chúng, để một checkpoint phủ cả miền triển khai thay vì một điểm trong đó.",
+     "plan": [
+      "Mở rộng điều kiện hành động lúc huấn luyện (2512.05964) và DEFLECT với biến ngân sách và biến độ cũ.",
+      "Đo thành công trên toàn miền thay vì tại một điểm vận hành."
+     ],
+     "claim": "x > y: một chính sách điều kiện theo miền sánh ngang các chính sách chuyên biệt tại từng điểm vận hành và thắng chúng khi lệch điểm danh định.",
+     "cost": "Một chính sách gọn cho mỗi thí nghiệm, khoảng 1 GPU-ngày.",
+     "fit": "Miền này chính là thứ runtime kiểm soát, nên runtime có thể đưa nó vào làm đầu vào.",
+     "risk": "Khung bao trùm; các phiên bản cụ thể nằm ở 4.2 và 5.5.",
+     "days": 1
+    }
    }
   },
   {
    "id": "5",
    "name": "Efficient Inference",
+   "name_vi": "Suy luận hiệu quả",
    "analysis": {
     "problem": "Per-step inference is dominated by visual tokens through the backbone and by iterative action decoding. The area cuts tokens, layers, denoising steps and recomputation, and decides how much of a predicted chunk to execute before re-planning.",
     "gaps": [
@@ -80,11 +130,35 @@
      "risk": "Umbrella framing; the concrete mechanisms are in 5.2 and 5.5.",
      "days": 3
     }
+   },
+   "analysis_vi": {
+    "problem": "Suy luận mỗi bước bị chi phối bởi token thị giác qua backbone và giải mã hành động lặp. Lĩnh vực này cắt token, lớp, bước khử nhiễu và tính toán lặp lại, và quyết định thực thi bao nhiêu phần của khối dự đoán trước khi tái hoạch định.",
+    "gaps": [
+     "Bốn núm (ngân sách token, độ sâu, bước giải mã, chân trời thực thi) được bốn tiểu mục chỉnh bằng bốn heuristic riêng, mỗi cái báo cáo FLOPs trung bình thay vì độ trễ xấu nhất vốn quyết định tốc độ điều khiển.",
+     "Hầu hết phương pháp được kiểm chứng trên OpenVLA hoặc pi0, nơi backbone chiếm phần lớn; trên chính sách gọn, bộ mã hóa thị giác chiếm phần lớn và đa số phương pháp này không áp dụng được như đã công bố.",
+     "Quyết định cổng (cắt, bỏ qua, tái sử dụng, tái hoạch định) đến từ attention hay độ tin cậy của chính mô hình, mà bài 'Gate, not the cache' cho thấy không đáng tin trong vòng kín và chưa ai thử dưới nhiễu loạn."
+    ],
+    "direction": {
+     "title": "Một hạn chót, bốn núm: đồng lập lịch token, độ sâu, bước và chân trời dưới cận độ trễ cứng mỗi khối",
+     "type": "system",
+     "bit": "Mỗi bộ tăng tốc suy luận được chỉnh riêng và báo cáo tiết kiệm trung bình.",
+     "flip": "Bộ điều khiển cần cận xấu nhất. Coi bốn núm là một bài toán lập lịch mỗi khối với hạn chót, và để runtime chọn điểm vận hành từ thời gian đo thực.",
+     "plan": [
+      "Gắn cả bốn núm vào một chính sách gọn; đặc trưng hóa mặt độ trễ chung của chúng trên CPU và GPU.",
+      "Học hoặc tìm kiếm bộ lập lịch cho mỗi hạn chót; đánh giá dưới hạn chót tiêm vào trên LIBERO."
+     ],
+     "claim": "x > y: chính sách lập lịch chung dưới hạn chót cố định thắng phương pháp một núm tốt nhất ở cùng hạn chót.",
+     "cost": "Chủ yếu đánh giá; vài GPU-ngày.",
+     "fit": "Bộ lập lịch sống trong runtime.",
+     "risk": "Khung bao trùm; cơ chế cụ thể nằm ở 5.2 và 5.5.",
+     "days": 3
+    }
    }
   },
   {
    "id": "6",
    "name": "Efficient Deployment",
+   "name_vi": "Triển khai hiệu quả",
    "analysis": {
     "problem": "Turn a trained VLA into a real-time control loop on robot hardware or across edge and cloud: runtimes, kernels, pipelining, KV management and fleet serving.",
     "gaps": [
@@ -107,11 +181,35 @@
      "risk": "System paper; novelty rests on the measurement, so the protocol has to be rigorous (7.1).",
      "days": 1
     }
+   },
+   "analysis_vi": {
+    "problem": "Biến VLA đã huấn luyện thành vòng điều khiển thời gian thực trên phần cứng robot hoặc giữa biên và đám mây: runtime, kernel, pipelining, quản lý KV và phục vụ đội robot.",
+    "gaps": [
+     "Chỉ 13 bài, không có benchmark triển khai chung. Mỗi runtime báo cáo mô hình riêng trên phần cứng riêng, và nghiên cứu xuất SmolVLA cho thấy các biến thể xuất làm thay đổi hành vi vòng kín, không chỉ tốc độ.",
+     "Các bộ tăng tốc thuật toán ở Lĩnh vực 5 tồn tại dưới dạng nguyên mẫu PyTorch; khoảng cách giữa tăng tốc tuyên bố và thực hiện trong runtime chưa được đo.",
+     "Không gì chạy dưới lớp Jetson. TinyVLM đến được vi điều khiển chỉ cho phát hiện."
+    ],
+    "direction": {
+     "title": "Khép khoảng cách tuyên bố-so-với-thực hiện: một runtime hiện thực các bộ tăng tốc và báo cáo chúng mua được gì",
+     "type": "system",
+     "bit": "Bài tăng tốc báo cáo FLOPs hoặc thời gian PyTorch trên máy trạm.",
+     "flip": "Hiện thực các phương pháp cắt tỉa token, bộ đệm và lượng tử hóa hàng đầu trong một runtime và báo cáo độ trễ đo thực, bộ nhớ, tương đương số học và thành công vòng kín trên ba lớp thiết bị.",
+     "plan": [
+      "Chọn hai phương pháp hàng đầu từ 5.1, 5.4 và 3.3; hiện thực trong vla.cpp.",
+      "Báo cáo tăng tốc thực hiện, tương đương với tham chiếu PyTorch và thành công LIBERO-Plus."
+     ],
+     "claim": "Cận x: tăng tốc thực hiện chỉ là một phần của tăng tốc tuyên bố, và bài báo lượng hóa nó theo phương pháp và thiết bị.",
+     "cost": "Thời gian kỹ thuật thay vì thời gian GPU.",
+     "fit": "Đây là bài báo tiếp nối của vla.cpp.",
+     "risk": "Bài hệ thống; tính mới dựa trên phép đo, nên giao thức phải nghiêm ngặt (7.1).",
+     "days": 1
+    }
    }
   },
   {
    "id": "7",
    "name": "Evaluation and Robustness",
+   "name_vi": "Đánh giá và độ bền vững",
    "analysis": {
     "problem": "Decide whether an efficiency gain is real. Nominal LIBERO is saturated and hides memorization; closed-loop latency, delay and perturbation robustness must be measured together or an efficiency claim cannot be trusted.",
     "gaps": [
@@ -133,9 +231,38 @@
      "risk": "Benchmark contributions need breadth of models to be cited; plan for 10+ checkpoints.",
      "days": 3
     }
+   },
+   "analysis_vi": {
+    "problem": "Quyết định một lợi ích hiệu quả có thật hay không. LIBERO danh nghĩa đã bão hòa và che giấu sự ghi nhớ; độ trễ vòng kín, độ trễ suy luận và độ bền vững dưới nhiễu loạn phải được đo cùng nhau, nếu không tuyên bố hiệu quả không thể tin được.",
+    "gaps": [
+     "Chỉ bảy bài, không bài nào cũ hơn tháng 10/2025. Nhiễu loạn (LIBERO-Plus), độ trễ (TBD-VLA) và lượng tử hóa (LoopQ, VLAQuantBench) mỗi cái được đo riêng; không benchmark nào quét chúng cùng lúc.",
+     "Không giao thức nào chạy chính sách trên thiết bị đích trong khi mô phỏng chạy nơi khác, nên số độ trễ 'biên' không bao giờ được đo trong vòng.",
+     "Chính sách gọn, loại nhiều khả năng được triển khai nhất, chưa bao giờ được đánh giá dưới nhiễu loạn."
+    ],
+    "direction": {
+     "title": "Đánh giá hiệu quả trong vòng: nhiễu loạn nhân độ trễ nhân ngân sách",
+     "type": "benchmark",
+     "bit": "Hiệu quả là một con số độ trễ đo trên đầu vào tổng hợp, báo cáo cạnh tỷ lệ thành công danh nghĩa.",
+     "flip": "Hiệu quả là thuộc tính vòng kín: báo cáo thành công như hàm của độ trễ đo thực, ngân sách tính toán và nhiễu loạn, với chính sách chạy trên thiết bị mà nó được tuyên bố.",
+     "plan": [
+      "Xây bộ công cụ hardware-in-the-loop (7.1); chạy checkpoint gọn và lượng tử hóa qua nó (7.2)."
+     ],
+     "claim": "Cận x: bao nhiêu phần của mỗi lợi ích hiệu quả được báo cáo sống sót qua vòng.",
+     "cost": "Chỉ đánh giá.",
+     "fit": "Bộ công cụ là runtime cộng cầu nối mô phỏng.",
+     "risk": "Đóng góp benchmark cần độ rộng mô hình để được trích dẫn; lên kế hoạch cho 10+ checkpoint.",
+     "days": 3
+    }
    }
   }
  ],
+ "roles_vi": {
+  "3": "thiết kế",
+  "4": "huấn luyện",
+  "5": "vận hành",
+  "6": "triển khai",
+  "7": "đo lường"
+ },
  "categories": [
   {
    "id": "3.1",
@@ -175,7 +302,43 @@
      23,
      5
     ]
-   }
+   },
+   "analysis_vi": {
+    "problem": "Xây dựng một chính sách đủ nhỏ và nhanh cho một GPU, một CPU hoặc một bo mạch biên mà vẫn giữ được thành công ở mức mô hình tổng quát, bằng cách thay backbone VLM (Mamba, VLM tí hon, bộ mã hóa đóng băng), thay phần hợp nhất (FiLM, bridge attention, resampler) hoặc thay đầu hành động (hồi quy một lần, flow một bước).",
+    "gaps": [
+     "Cuộc đua kích thước đã khép lại. MINERVA đạt 95,1% LIBERO với 0,54M tham số, MicroVLA 90,2% với 12,4M, CoRP 97,0% với 48,9M. \"Mô hình nhỏ nhất vượt X%\" không còn là đóng góp.",
+     "Câu hỏi về bộ mã hóa đang mâu thuẫn. CoRP thấy đóng băng DINOv2 mất 19,8 điểm; Patch Policy thắng với patch dày đặc đóng băng; MINERVA huấn luyện từ đầu. Chưa có nghiên cứu có kiểm soát tách riêng độ phân giải, ngân sách token, quy mô dữ liệu và cách xử lý bộ mã hóa.",
+     "Độ trễ tách rời khỏi số tham số. Mô hình 12,4M của MicroVLA không nhanh hơn mô hình 48,9M; khi sinh hành động chỉ còn một bước, bộ mã hóa thị giác chiếm phần lớn chi phí mỗi bước. Chưa bài nào báo cáo độ trễ dưới lớp máy trạm.",
+     "Chính sách gọn chỉ được đánh giá trong phân phối. LIBERO-Plus và LIBERO-PRO cho thấy mô hình lớn sụp đổ khi dịch chuyển camera và trạng thái ban đầu; chưa mô hình gọn nào được thử ở đó.",
+     "Ngôn ngữ gần như vô tác dụng ở quy mô này (CoRP: chỉ LIBERO-Goal; LIBERO-Plus: mô hình bỏ qua chỉ dẫn). Một \"VLA\" gọn thực chất là chính sách thị giác-vận động với một mã nhiệm vụ."
+    ],
+    "direction": {
+     "title": "Chính sách thao tác vòng kín đầu tiên chạy trên vi điều khiển",
+     "type": "mechanism",
+     "bit": "VLA gọn được thiết kế và đo trên GPU máy trạm; \"biên\" nghĩa là một Threadripper hoặc một Jetson.",
+     "flip": "Lấy ràng buộc của vi điều khiển (khoảng 1 MB flash, 512 KB RAM, chỉ số nguyên, dưới 100 ms mỗi khối) làm điều kiện thiết kế và chứng minh chính sách thao tác đầu tiên khép được vòng kín ở đó. Câu hỏi trở thành: tri thức thị giác tiền huấn luyện nào sống sót khi chưng cất vào bộ mã hóa số nguyên dưới 500K tham số.",
+     "plan": [
+      "Chưng cất đặc trưng dày đặc của DINOv2 hoặc Theia vào bộ mã hóa số nguyên tối đa 400K tham số ở 96 đến 128 px, với ngân sách token cứng điều kiện theo chỉ dẫn (phát hiện của CoRP) và đầu hồi quy một lần phát ra khối 16 bước (phát hiện của MINERVA và MicroVLA).",
+      "Huấn luyện nhận biết lượng tử hóa về INT8, xuất sang runtime MCU (TFLite Micro hoặc bộ kernel số nguyên kiểu ggml).",
+      "Đánh giá hardware-in-the-loop: LIBERO chạy trên máy trạm, truyền khung hình sang bo mạch qua USB, bo mạch trả về khối hành động; báo cáo thành công với độ trễ đo thực (giao thức TBD-VLA).",
+      "Khảo sát thứ gì hỏng trước khi xuống dưới 0,25M tham số, nơi MINERVA thấy sụp đổ: độ phân giải, tiền huấn luyện hay ngân sách token."
+     ],
+     "claim": "∃x: một chính sách thao tác chạy vòng kín trên chip lớp vi điều khiển với tỷ lệ thành công hữu ích, kèm một cận cho bộ mã hóa nhỏ nhất còn giữ được tri thức thị giác tiền huấn luyện.",
+     "cost": "Chưng cất cộng huấn luyện chính sách khoảng 3 đến 5 GPU-ngày; mọi thứ vừa một 3090.",
+     "fit": "Tận dụng trực tiếp chuyên môn runtime; chỉ cần thêm một bo mạch 15 đến 50 USD.",
+     "risk": "Thành công có thể sụp đổ ở độ phân giải MCU. Kết quả đó vẫn công bố được dưới dạng một cận, và giao thức hardware-in-the-loop dùng lại được cho 7.1.",
+     "days": 4
+    },
+    "key": [
+     8,
+     3,
+     4,
+     30,
+     23,
+     5
+    ]
+   },
+   "name_vi": "Kiến trúc gọn nhẹ"
   },
   {
    "id": "3.2",
@@ -215,7 +378,43 @@
      64,
      191
     ]
-   }
+   },
+   "analysis_vi": {
+    "problem": "Tách suy luận ngữ nghĩa (một VLM ở 1 đến 5 Hz) khỏi điều khiển phản xạ (30 đến 100 Hz) để hiểu biết của mô hình lớn đến được bộ điều khiển tần số cao mà không phải trả độ trễ của nó ở mỗi bước.",
+    "gaps": [
+     "Chưa có giao diện thống nhất giữa hai hệ: latent (HiRT, DP-VLA), mục tiêu con bằng ngôn ngữ, ngữ cảnh KV cuộn (AHA-WAM), trọng số sinh ra (HyperVLA), trạng thái hoàn thành có cổng (StreamVLA). Chưa nghiên cứu nào hỏi giao diện nào suy giảm êm khi đầu ra chậm trở nên cũ.",
+     "Độ cũ không được đo. Hệ nhanh tiêu thụ đặc trưng chậm đã cũ hàng trăm mili-giây; chỉ bài cloud-edge ở 6.2 huấn luyện tường minh cho đặc trưng cũ, và chưa ai vẽ thành công theo tuổi đặc trưng.",
+     "Kích hoạt chạy lại hệ chậm là chu kỳ cố định hoặc cổng hoàn thành heuristic; chưa gì học được khi nào suy nghĩ lại đáng với chi phí của nó.",
+     "Huấn luyện bị ghép đôi (tinh chỉnh đồng thời VLM và expert) và đánh giá trên cảnh tĩnh nơi hệ chậm hiếm khi cần làm mới, nên lợi ích không được chứng minh trên các tác vụ động vốn là động lực của thiết kế.",
+     "Các chính sách gọn ở 3.1 chưa bao giờ được dùng lại làm hệ nhanh, dù chúng có kích thước vừa vặn cho vai trò đó."
+    ],
+    "direction": {
+     "title": "Hệ kép nhận biết độ cũ: huấn luyện bộ điều khiển nhanh trên ngữ cảnh đã cũ và học khi nào cần suy nghĩ lại",
+     "type": "mechanism",
+     "bit": "Hệ nhanh-chậm giả định ngữ cảnh chậm đủ mới và làm mới nó theo lịch cố định.",
+     "flip": "Biến độ cũ thành đầu vào hạng nhất: huấn luyện bộ điều khiển nhanh dưới một phân phối tuổi ngữ cảnh được lấy mẫu, với tuổi là một đặc trưng, và suy ra kích hoạt suy nghĩ lại từ độ nhạy đo được của chính bộ điều khiển với ngữ cảnh cũ.",
+     "plan": [
+      "Lưu đệm đặc trưng hệ chậm (backbone SmolVLA hoặc pi0) một lần cho mỗi khung hình demo; không lan truyền ngược qua VLM.",
+      "Huấn luyện bộ điều khiển nhanh dưới 50M tiêu thụ đặc trưng cũ k bước, với k được lấy mẫu và đưa vào làm đầu vào; so sánh các giao diện (latent, ngữ cảnh KV, mục tiêu con dạng văn bản) dưới cùng giao thức làm cũ.",
+      "Học kích hoạt: chạy lại hệ chậm khi độ lệch hành động dự đoán giữa ngữ cảnh mới và cũ vượt ngưỡng; so với chu kỳ cố định và cổng hoàn thành.",
+      "Đánh giá thành công theo chu kỳ chậm bị ép trên LIBERO và trên biến thể vật thể động."
+     ],
+     "claim": "x > y: bộ điều khiển nhanh điều kiện theo tuổi với kích hoạt học được giữ thành công phẳng đến gấp vài lần chu kỳ chậm mà ở đó hệ theo lịch cố định suy giảm.",
+     "cost": "Lưu đệm đặc trưng khoảng 1 GPU-ngày; mỗi lần chạy bộ điều khiển nhanh vài giờ trên một 3090.",
+     "fit": "vla.cpp có thể chạy mô hình chậm trên GPU và mô hình nhanh trên CPU với độ cũ thực thay vì mô phỏng.",
+     "risk": "Nếu cảnh LIBERO không đổi đủ để độ cũ quan trọng, biến thể động phải gánh kết quả.",
+     "days": 2
+    },
+    "key": [
+     228,
+     118,
+     166,
+     67,
+     64,
+     191
+    ]
+   },
+   "name_vi": "Kiến trúc nhanh–chậm"
   },
   {
    "id": "3.3",
@@ -255,7 +454,43 @@
      110,
      61
     ]
-   }
+   },
+   "analysis_vi": {
+    "problem": "Giảm số bit và tham số của một VLA có sẵn (lượng tử hóa, cắt tỉa, chưng cất) để vừa bộ nhớ biên và chạy nhanh hơn, lý tưởng là không cần huấn luyện lại.",
+    "gaps": [
+     "Lượng tử hóa tiết kiệm bộ nhớ nhưng hiếm khi tiết kiệm thời gian thực. LoopQ và VLAQuantBench đo trực tiếp điều này; đa số bài báo cáo BitOps vì kernel dưới 4 bit cho đầu flow/khuếch tán và cho ViT chưa tồn tại trong runtime robot.",
+     "Đánh giá là vòng hở hoặc trong phân phối. LoopQ cho thấy tổn thất vô hình trên LIBERO danh nghĩa xuất hiện lại 1,5 đến 4,3 điểm dưới nhiễu loạn LIBERO-Plus ghép cặp.",
+     "Cắt tỉa cần huấn luyện phục hồi (GLUESTICK, RLRC, Drop-Then-Recovery); tuyên bố \"không cần huấn luyện\" hiếm khi đúng với đầu hành động.",
+     "Chưa phương pháp nén nào được so sánh giữa các loại đầu hành động (token tự hồi quy, flow, khuếch tán) với một giao thức hiệu chuẩn; đầu flow là điểm yếu đã biết và W4A4 cho nó (HoloQ-VLA) mới chỉ bắt đầu.",
+     "Nhiễu lượng tử hóa tích lũy dọc theo khối hành động (DyQ-VLA gợi ý điều này) nhưng chưa có mô hình nào cho hiệu ứng vòng kín."
+    ],
+    "direction": {
+     "title": "Hiệu chuẩn nhận biết vòng kín: lượng tử hóa cho quỹ đạo chứ không cho một lượt truyền, và hiện thực hóa trong runtime",
+     "type": "mechanism",
+     "bit": "Lượng tử hóa sau huấn luyện hiệu chuẩn theo sai số tái tạo từng lớp của một lượt truyền xuôi.",
+     "flip": "Hiệu chuẩn theo độ lệch khối hành động khi rollout: gán độ chính xác mỗi lớp theo độ nhạy vòng kín đo được, rồi hiện thực sơ đồ độ chính xác hỗn hợp thành kernel thật để tốc độ được đo thay vì đếm bằng BitOps.",
+     "plan": [
+      "Ước lượng độ nhạy vòng kín từng lớp bằng vài trăm rollout phản thực trên LIBERO cho mỗi checkpoint (đổi độ chính xác một lớp, đo độ lệch khối và thành công).",
+      "Phân bổ bit với độ nhạy đó làm mục tiêu; so với tiêu chí Hessian và dải kích hoạt (HBVLA, QuantVLA, Mix-QVLA).",
+      "Hiện thực sơ đồ trong vla.cpp với kernel ggml Q4 và Q8 cho cả backbone và đầu flow; báo cáo mili-giây đo trên 3090 và CPU.",
+      "Đánh giá trên LIBERO cộng LIBERO-Plus để kiểm tra liệu phân bổ theo độ nhạy có khép được khoảng cách nhiễu loạn của LoopQ."
+     ],
+     "claim": "x > y: độ chính xác hỗn hợp phân bổ theo độ nhạy thắng phân bổ đồng đều và Hessian ở cùng độ trễ đo thực, và khoảng cách nới rộng dưới nhiễu loạn.",
+     "cost": "Không huấn luyện; rollout hiệu chuẩn và đánh giá khoảng 2 GPU-ngày.",
+     "fit": "Phù hợp nhất với vla.cpp: chưa ai ghép một phương pháp lượng tử hóa với runtime thực sự thực thi nó.",
+     "risk": "Nếu đầu flow chiếm phần lớn độ trễ, thắng lợi phải đến từ kernel của đầu; giữ phần hiện thực đó trên đường găng của kế hoạch.",
+     "days": 2
+    },
+    "key": [
+     198,
+     49,
+     83,
+     167,
+     110,
+     61
+    ]
+   },
+   "name_vi": "Nén mô hình"
   },
   {
    "id": "4.1",
@@ -293,7 +528,41 @@
      58,
      136
     ]
-   }
+   },
+   "analysis_vi": {
+    "problem": "Giảm chi phí demo và tính toán của học bắt chước: chọn dữ liệu nào để thu hoặc giữ (tuyển chọn), dùng video không nhãn (hành động tiềm ẩn), quyết định dự đoán gì (tokenizer, khối tương lai, ít khung hình hơn) và chuẩn bị backbone (mid-training).",
+    "gaps": [
+     "Các phương pháp tuyển chọn (DemInf, SCIZOR, DataMIL, CUPID, SIEVE) mỗi cái được kiểm chứng với baseline và tập dữ liệu khác nhau. Không có giao thức chung, chưa kiểm tra chúng có kết hợp được không, và chưa có bằng chứng chúng giúp chính sách gọn.",
+     "Tiền huấn luyện hành động tiềm ẩn (LAPA, UniVLA) được chứng minh ở quy mô 7B. Liệu nó giúp chính sách dưới 100M, nơi tiền huấn luyện rẻ nhất để thử, vẫn chưa biết, và lĩnh vực giữ hai kết quả mâu thuẫn: CoRP nói khởi tạo tiền huấn luyện mang tính quyết định, MINERVA huấn luyện từ đầu đạt 95%.",
+     "Công trình tokenizer (FAST, ActionCodec) nhắm đến đầu tự hồi quy. Với đầu hồi quy một lần vốn thắng ở quy mô nhỏ, câu hỏi dự đoán gì (độ dài khối, bỏ khung, điều kiện tương lai) chỉ mới được MINERVA, FrameSkip và FOCA trả lời một phần.",
+     "Hiệu quả dữ liệu chưa bao giờ được đo so với độ bền vững. Chọn theo thành công danh nghĩa có thể chọn ra sự ghi nhớ (LIBERO-PRO)."
+    ],
+    "direction": {
+     "title": "Tiền huấn luyện hành động tiềm ẩn cho chính sách gọn, đo bằng đường cong theo số demo",
+     "type": "mechanism",
+     "bit": "Lợi ích tiền huấn luyện xuất hiện ở quy mô VLM và cần dữ liệu robot có nhãn hành động.",
+     "flip": "Dưới 50M tham số, tiền huấn luyện gần như miễn phí, nên câu hỏi là liệu hành động tiềm ẩn từ video mua được một bội số hiệu quả demo ở nơi rẻ nhất, và liệu chúng giải thích được bất đồng CoRP với MINERVA.",
+     "plan": [
+      "Huấn luyện mô hình hành động tiềm ẩn kiểu LAPA trên video LIBERO và Bridge ở quy mô nhỏ; tiền huấn luyện chính sách dưới 50M trên hành động tiềm ẩn.",
+      "Tinh chỉnh với 10, 30, 100 và toàn bộ demo mỗi nhiệm vụ; vẽ thành công theo số demo so với huấn luyện từ đầu và so với chỉ khởi tạo bộ mã hóa tiền huấn luyện.",
+      "Đánh giá mọi điểm trên cả LIBERO-Plus, để xem tiền huấn luyện mua độ bền vững hay chỉ thành công danh nghĩa."
+     ],
+     "claim": "x > y: tiền huấn luyện hành động tiềm ẩn dịch chuyển đường cong demo của chính sách gọn một hệ số không đổi, và dịch chuyển lớn hơn dưới nhiễu loạn.",
+     "cost": "Khoảng 1 đến 2 GPU-ngày cho mỗi bộ điểm trên đường cong; cả nghiên cứu vừa hai tuần trên 2 x 3090.",
+     "fit": "Chính sách gọn là loại triển khai được, nên kết quả đi thẳng vào 3.1.",
+     "risk": "Nếu từ đầu sánh ngang tiền huấn luyện ở mọi điểm, bài báo thành kết quả âm giải quyết mâu thuẫn; vẫn hữu ích.",
+     "days": 8
+    },
+    "key": [
+     227,
+     194,
+     26,
+     84,
+     58,
+     136
+    ]
+   },
+   "name_vi": "Học có giám sát hiệu quả"
   },
   {
    "id": "4.2",
@@ -332,7 +601,42 @@
      157,
      116
     ]
-   }
+   },
+   "analysis_vi": {
+    "problem": "Tinh chỉnh RL cho VLA ngốn mẫu và tính toán: rollout chậm, phần thưởng thưa, gradient qua backbone hàng tỷ tham số và đầu flow nhiều bước đắt đỏ. Các phương pháp cắt rollout (RIPT-VLA, PCM, ExToken), cắt chi phí gradient (PCM, RL-VLA³, RLinf-VLA) hoặc lấy phần thưởng từ mô hình thế giới hay bản sao số (VLA-RFT, TwinRL).",
+    "gaps": [
+     "Mọi phương pháp giả định backbone lớn. RL cho chính sách gọn, nơi rollout chiếm chi phí và gradient rẻ, chưa được khám phá, dù đó là chính sách được triển khai.",
+     "Độ trễ bị bỏ qua trừ một bài (RL cho VLA thời gian thực); chính sách tinh chỉnh RL được đánh giá với độ trễ suy luận bằng không.",
+     "Phần thưởng là cờ thành công. Không gì tối ưu chi phí suy luận trong phần thưởng, nên quyết định tính toán thích nghi ở 5.2 vẫn là heuristic thay vì học từ kết quả.",
+     "Không ai kiểm tra lợi ích RL có sống sót qua nhiễu loạn LIBERO-Plus; RL có thể làm sắc nét sự ghi nhớ."
+    ],
+    "direction": {
+     "title": "RL nhận biết tính toán: chính sách tự chọn ngân sách token và độ sâu dưới phần thưởng thành công trừ độ trễ",
+     "type": "mechanism",
+     "bit": "Tinh chỉnh RL tối ưu thành công; tính toán do kiến trúc cố định.",
+     "flip": "Phơi các núm tính toán (ngân sách token thị giác, độ sâu đệ quy, thoát sớm) thành hành động rời rạc bổ sung và học chúng từ kết quả vòng kín với phạt độ trễ, để chính sách chi tính toán đúng nơi nó thay đổi kết quả.",
+     "plan": [
+      "Bắt đầu từ chính sách gọn (lớp CoRP hoặc MicroVLA) có sẵn núm ngân sách trong kiến trúc (ngân sách token cứng, độ sâu đệ quy).",
+      "Lợi thế leave-one-out kiểu RIPT trên rollout LIBERO, phần thưởng = thành công trừ lambda nhân mili-giây đo thực.",
+      "Quét lambda để vẽ mặt Pareto thành công theo độ trễ; so với mọi chính sách ngân sách cố định và với tính toán thích nghi heuristic (DeeR-VLA, LoopVLA).",
+      "Đánh giá trên LIBERO-Plus để xem chính sách học được chi tính toán ở đâu dưới nhiễu loạn."
+     ],
+     "claim": "x > y: chính sách ngân sách học được trội hơn mọi ngân sách cố định trên mặt thành công-độ trễ, và chi nhiều tính toán hơn đúng ở các tập có nhiễu loạn.",
+     "cost": "Chính sách dưới 50M, rollout song song trên nhân CPU, gradient trên một 3090; khoảng 3 GPU-ngày.",
+     "fit": "Mili-giây đo thực trong phần thưởng lấy từ runtime, khiến kết quả gắn với phần cứng theo cách bảo vệ được.",
+     "risk": "Phần thưởng thưa cộng số hạng chi phí có thể sụp về ngân sách rẻ nhất; một ràng buộc sàn thành công xử lý được điều đó.",
+     "days": 3
+    },
+    "key": [
+     207,
+     80,
+     35,
+     7,
+     157,
+     116
+    ]
+   },
+   "name_vi": "Học tăng cường hiệu quả"
   },
   {
    "id": "4.3",
@@ -371,7 +675,42 @@
      11,
      156
     ]
-   }
+   },
+   "analysis_vi": {
+    "problem": "Thích nghi VLA tiền huấn luyện sang hình thái, nhiệm vụ hay môi trường mới với ít tham số huấn luyện và ít demo, không quên: các biến thể LoRA, adapter, soft prompt, học liên tục, huấn luyện lúc kiểm thử.",
+    "gaps": [
+     "Các phương pháp học liên tục (CLARE, LifelongVLA, nghiên cứu kháng quên) dựa trên bộ mã hóa đóng băng, mà CoRP nói tốn khoảng 20 điểm thành công danh nghĩa; chưa ai đo cái giá dẻo-so-với-ổn định đó.",
+     "Huấn luyện lúc kiểm thử (TTT-VLA, VANE) chạy bên trong vòng điều khiển mà không tính độ trễ và không có đảm bảo dừng; chỉ kiểm chứng trên vài môi trường.",
+     "Thích nghi xuyên hình thái (X-VLA) được chứng minh ở quy mô 1B+; chính sách gọn có chuyển được qua hình thái bằng soft prompt hay không vẫn mở.",
+     "Adapter chưa bao giờ đến được triển khai: không runtime nào hoán đổi nóng chúng, và độ trễ của adapter gộp so với tách rời trên thiết bị biên chưa được đo."
+    ],
+    "direction": {
+     "title": "Thích nghi lúc kiểm thử ngoài đường găng: bộ học nền cập nhật adapter nhỏ trong khi chính sách hành động",
+     "type": "mechanism",
+     "bit": "Thích nghi lúc kiểm thử cập nhật chính sách bên trong bước điều khiển, nên tốn độ trễ và có thể làm mất ổn định vòng lặp.",
+     "flip": "Chạy thích nghi như một tiến trình riêng trên các rollout gần đây của chính robot với tín hiệu tự giám sát, và chỉ hoán đổi trọng số adapter tại ranh giới khối sau một bước xác thực rẻ (như VANE xác thực cập nhật prompt). Vòng điều khiển không bao giờ chờ gradient.",
+     "plan": [
+      "Mục tiêu tự giám sát: dự đoán đặc trưng tương lai trên đặc trưng bộ mã hóa đóng băng (kiểu VANE, SLIM-0.5B) cộng nhất quán khối hành động giữa các dự đoán liên tiếp.",
+      "Coi nhiễu loạn LIBERO-Plus (dịch camera, ánh sáng, nền) là \"môi trường mới\"; đo thích nghi không giám sát phục hồi bao nhiêu phần của mức sụt 95 xuống 30 trong N tập.",
+      "Hiện thực thiết kế hai tiến trình trong runtime: luồng suy luận cộng luồng học chia sẻ trọng số adapter; báo cáo dao động tốc độ điều khiển.",
+      "Thêm quy tắc quay lui: hoàn nguyên adapter khi xác thực trên khung hình gần đây xấu đi."
+     ],
+     "claim": "∃x và x > y: thích nghi với độ trễ điều khiển cộng thêm bằng không phục hồi phần đáng kể của mức sụt do nhiễu loạn và thắng TTT trong vòng ở cùng thời gian thực.",
+     "cost": "Adapter dưới 2M tham số; mỗi thí nghiệm dưới một GPU-ngày.",
+     "fit": "Thiết kế hai luồng là tính năng runtime; đây là bài báo mà vla.cpp có thể sở hữu.",
+     "risk": "Tín hiệu tự giám sát có thể thích nghi với nhiễu loạn mà không cải thiện thành công; cổng xác thực và quay lui là biện pháp bảo vệ và cũng là ablation.",
+     "days": 1
+    },
+    "key": [
+     141,
+     31,
+     107,
+     43,
+     11,
+     156
+    ]
+   },
+   "name_vi": "Tinh chỉnh và thích nghi hiệu quả"
   },
   {
    "id": "5.1",
@@ -411,7 +750,43 @@
      170,
      33
     ]
-   }
+   },
+   "analysis_vi": {
+    "problem": "Hàng trăm token thị giác mỗi góc nhìn mỗi bước đi vào một transformer có chi phí tăng theo số token, và đa số token là nền. Cắt hoặc gộp token theo attention, liên quan chỉ dẫn, độ sâu, thay đổi thời gian hay liên quan hành động; nén chuỗi suy luận vào latent; nén lịch sử vào bộ nhớ.",
+    "gaps": [
+     "Đông đúc: 38 bài, đa số trên LIBERO hoặc SimplerEnv với OpenVLA hoặc pi0 ở khoảng một nửa số token. Lợi ích chồng lấn và hiếm khi được so sánh trực tiếp dưới cùng ngân sách.",
+     "Độ tin cậy của cổng chưa được kiểm tra. Điểm cắt tỉa đến từ attention của chính mô hình, mà bài 'Gate, not the cache' cho thấy trôi dạt trong vòng kín; chưa phương pháp nào báo cáo kết quả dưới vật gây nhiễu hay ánh sáng của LIBERO-Plus, nơi token nền bỗng trở nên quan trọng.",
+     "Cắt tỉa diễn ra sau bộ mã hóa thị giác. Chỉ ActPrune bỏ token trước khi mã hóa, chính là nơi độ trễ nằm với chính sách gọn.",
+     "Action-JND định nghĩa dung sai mức hành động cho cắt tỉa nhưng chưa phương pháp nào dùng nó để đặt ngân sách động.",
+     "Cắt tỉa đơn khung, cắt tỉa đa góc nhìn (BFA++) và nén lịch sử (FibVLA, MemoryVLA) là các ngân sách riêng; không có hạch toán chung."
+    ],
+    "direction": {
+     "title": "Hội tụ thị giác trước bộ mã hóa điều khiển bởi tư thế kẹp và hành động vừa rồi, ngân sách đặt theo dung sai hành động",
+     "type": "mechanism",
+     "bit": "Chọn token chạy trên token đã mã hóa, dùng attention làm proxy cho tầm quan trọng.",
+     "flip": "Quyết định patch ảnh nào được mã hóa ngay từ đầu, trước bộ mã hóa, từ tín hiệu không phụ thuộc attention của chính mô hình: tư thế kẹp, hành động đã thực thi và tiêu chí dung sai hành động (JND) học được. Tiết kiệm khi đó rơi đúng nơi chính sách gọn tiêu thời gian, và cổng không thể trôi theo backbone.",
+     "plan": [
+      "Huấn luyện bộ chọn patch tí hon (dưới 100K tham số) chấm điểm patch từ cảm biến bản thể và khối trước; giám sát bằng nhãn Action-JND (bỏ patch này có đẩy hành động vượt dung sai không) tính ngoại tuyến từ checkpoint có sẵn.",
+      "Mã hóa patch được chọn ở độ phân giải đầy đủ và phần còn lại dưới dạng tóm tắt thô; giữ ngân sách động qua dung sai.",
+      "Đánh giá trên chính sách gọn (lớp CoRP, MicroVLA) nơi bộ mã hóa chiếm phần lớn; đo mili-giây trong vla.cpp trên CPU.",
+      "Thử thách cổng dưới vật gây nhiễu và ánh sáng LIBERO-Plus so với các bộ cắt tỉa theo attention (ADP, VLA-Pruner, SpecPrune)."
+     ],
+     "claim": "x > y: bộ chọn trước bộ mã hóa dựa trên cảm biến bản thể sánh ngang cắt tỉa theo attention trong phân phối và thắng nó dưới nhiễu loạn ở cùng độ trễ đo thực.",
+     "cost": "Nhãn ngoại tuyến từ checkpoint có sẵn cộng bộ chọn tí hon: dưới 2 GPU-ngày.",
+     "fit": "Thưa mức patch cần hỗ trợ runtime để thành tốc độ; đó là đóng góp runtime.",
+     "risk": "Tập patch không hình chữ nhật phá kernel ViT chuẩn; dùng ngân sách cố định với gather để kernel vẫn dày đặc.",
+     "days": 2
+    },
+    "key": [
+     1,
+     18,
+     174,
+     148,
+     170,
+     33
+    ]
+   },
+   "name_vi": "Cắt tỉa token và nén ngữ cảnh"
   },
   {
    "id": "5.2",
@@ -450,7 +825,42 @@
      21,
      100
     ]
-   }
+   },
+   "analysis_vi": {
+    "problem": "Không phải bước điều khiển nào cũng cần cả mạng. Thoát sớm, bỏ lớp, tinh chỉnh độ sâu đệ quy, hỗn hợp lớp, chuyển mô hình giữa chính sách suy xét và phản xạ, và suy luận thích nghi cắt tính toán trung bình.",
+    "gaps": [
+     "Quyết định thoát và bỏ đến từ độ tin cậy của chính mô hình, vốn hiệu chuẩn sai dưới dịch chuyển phân phối; chưa có nghiên cứu hiệu chuẩn nào cho VLA.",
+     "Tiết kiệm được báo cáo bằng FLOPs trung bình. Bộ điều khiển phải lập lịch cho trường hợp xấu nhất, và độ trễ xấu nhất (quyết định tốc độ điều khiển đạt được) hiếm khi được báo cáo.",
+     "Chuyển độ sâu hay mô hình giữa các khối liên tiếp làm thay đổi thống kê hành động và gây giật; độ mượt qua các chuyển tiếp chưa được đo.",
+     "Tín hiệu ngân sách là nội bộ; không cái nào lấy chi phí bên ngoài (trạng thái nhiệt, tranh chấp, pin) làm đầu vào."
+    ],
+    "direction": {
+     "title": "VLA bất kỳ lúc: khối nhất quán giữa các điểm thoát dưới hạn chót cứng",
+     "type": "mechanism",
+     "bit": "Chính sách độ sâu thích nghi quyết định đi sâu bao nhiêu từ độ tin cậy và báo cáo tiết kiệm trung bình.",
+     "flip": "Làm chính sách thành anytime: độ sâu nào hạn chót cho phép cũng phải sinh ra khối nhất quán thống kê với khối sâu hơn, để runtime có thể cắt tính toán ở thời điểm bất kỳ mà không giật. Quyết định chuyển từ độ tin cậy của mô hình sang đồng hồ của runtime.",
+     "plan": [
+      "Huấn luyện chính sách gọn độ sâu đệ quy hoặc đa thoát với mất mát nhất quán xuyên thoát trên khối dự đoán (phân phối và độ mượt), không chỉ mất mát hành động mỗi điểm thoát.",
+      "Thêm đầu vào ngân sách bên ngoài (hạn chót tính bằng ms) để chính sách có thể hoạch định khối mà nó kịp hoàn thành.",
+      "Đánh giá với hạn chót và độ trễ tiêm vào trên LIBERO (giao thức TBD-VLA) và báo cáo độ trễ xấu nhất, độ giật tại chuyển tiếp và thành công.",
+      "So với DeeR-VLA, LoopVLA và chuyển mô hình (EMS) ở độ trễ xấu nhất bằng nhau."
+     ],
+     "claim": "x > y: ở cùng độ trễ xấu nhất, chính sách anytime nhất quán xuyên thoát thắng thoát sớm theo độ tin cậy về thành công và độ mượt hành động.",
+     "cost": "Huấn luyện chính sách gọn, khoảng 1 GPU-ngày mỗi biến thể.",
+     "fit": "Runtime áp hạn chót và đo điểm cắt thực; cơ chế vô dụng nếu không có runtime.",
+     "risk": "Nhất quán xuyên thoát có thể tốn thành công danh nghĩa ở độ sâu đầy đủ; báo cáo đánh đổi đó tường minh.",
+     "days": 2
+    },
+    "key": [
+     225,
+     78,
+     121,
+     133,
+     21,
+     100
+    ]
+   },
+   "name_vi": "Tính toán động"
   },
   {
    "id": "5.3",
@@ -489,7 +899,42 @@
      81,
      183
     ]
-   }
+   },
+   "analysis_vi": {
+    "problem": "Đầu tự hồi quy cần nhiều bước token tuần tự và đầu khuếch tán hoặc flow cần nhiều bước khử nhiễu. Làm đầu thành một lần hoặc vài bước (giải mã song song, consistency, flow một bước, giải mã suy đoán) hoặc nén khối bằng tokenizer tốt hơn.",
+    "gaps": [
+     "Gần bão hòa ở quy mô nhỏ: MINERVA thấy flow không thêm gì so với hồi quy, và One-Step VLA, SnapFlow và CF-VLA đều gần ngang đầu nhiều bước. Nơi đa phương thức thực sự quan trọng (demo nhiều chiến lược, tác vụ tiếp xúc nhiều) không có trong benchmark.",
+     "Tokenizer (FAST, BEAST, VQ-VLA, OmniSAT, FASTer, MINT) nhắm đến backbone tự hồi quy; không có so sánh tokenizer với đầu liên tục trên cùng backbone ở cùng độ trễ.",
+     "Tương tác với độ trễ bị bỏ qua. TBD-VLA cho thấy thành công sụp từ 97,7% xuống 72,3% dưới độ trễ 4 bước trừ khi dùng chia khối thời gian thực; đa số bài một bước không đánh giá dưới độ trễ.",
+     "Bất định tốn mẫu. FabriVLA và KeyStone lấy hiệu chuẩn hay đồng thuận từ lấy mẫu lặp lại, nhân chi phí lên; chưa đầu một lần nào cho bất định đã hiệu chuẩn."
+    ],
+    "direction": {
+     "title": "Đầu một lần K giả thuyết: một lượt truyền, nhiều khối ứng viên, bộ chọn học được, và bất định miễn phí",
+     "type": "mechanism",
+     "bit": "Phân phối hành động đa phương thức cần bộ lấy mẫu lặp; hồi quy một lần lấy trung bình các mode.",
+     "flip": "Một lượt truyền xuôi có thể phát ra K khối ứng viên huấn luyện với mất mát winner-take-all (multiple-choice learning) và một bộ chọn; bất đồng giữa các giả thuyết là tín hiệu bất định đã hiệu chuẩn với không lượt truyền thêm, mà 5.5 có thể dùng để quyết định chân trời thực thi.",
+     "plan": [
+      "Xây tập con benchmark nơi đa phương thức là thật: các nhiệm vụ LIBERO được demo lại với hai chiến lược hợp lệ, cộng một bộ tiếp xúc nhiều.",
+      "Huấn luyện đầu K giả thuyết (K = 4 đến 8) trên chính sách gọn và cỡ vừa; so với flow (5 đến 10 bước), flow một bước và hồi quy thuần ở cùng độ trễ.",
+      "Dùng bất đồng giả thuyết để đặt chân trời thực thi và kích hoạt tái hoạch định; đánh giá dưới độ trễ tiêm vào.",
+      "Báo cáo hiệu chuẩn (bất đồng có dự đoán thất bại không) cùng thành công và ms."
+     ],
+     "claim": "x > y: ở cùng độ trễ, đầu K giả thuyết sánh ngang flow nơi có mode và thắng hồi quy ở đó, đồng thời cho bất định đã hiệu chuẩn cải thiện chọn chân trời.",
+     "cost": "Khoảng 1 GPU-ngày mỗi biến thể đầu trên một 3090.",
+     "fit": "Một lượt, kernel dày đặc, không bộ lấy mẫu: đầu dễ chạy nhất trong runtime C++.",
+     "risk": "Nếu benchmark không chứa đa phương thức thật, đầu chỉ ngang hồi quy; vì vậy tập con đa phương thức là một phần đóng góp.",
+     "days": 2
+    },
+    "key": [
+     52,
+     91,
+     44,
+     221,
+     81,
+     183
+    ]
+   },
+   "name_vi": "Sinh hành động hiệu quả"
   },
   {
    "id": "5.4",
@@ -528,7 +973,42 @@
      36,
      2
     ]
-   }
+   },
+   "analysis_vi": {
+    "problem": "Các khung hình liên tiếp gần như giống nhau, nên tái sử dụng token thị giác, bộ đệm KV, trung gian khử nhiễu, văn bản suy luận hay cả hành động qua các bước thay vì tính lại.",
+    "gaps": [
+     "Cổng tái sử dụng (hiệu pixel, entropy attention, độ tin cậy hành động) là heuristic và hỏng khi thay đổi đột ngột; bài 'Gate, not the cache' cho thấy cổng, không phải cache, giới hạn độ tin cậy. RoboWorM kiểm toán cache mô hình thế giới, nhưng không gì kiểm toán cache VLA dưới nhiễu loạn.",
+     "Tiết kiệm được đo trên pi0 hoặc OpenVLA nơi backbone chiếm phần lớn. Với chính sách gọn, bộ mã hóa chiếm phần lớn, và chỉ bài dư thừa thời gian tái sử dụng tính toán bên trong ViT.",
+     "Lịch cache được tìm ngoại tuyến cho một nhiệm vụ cố định (EVO, BAC); không thích nghi trực tuyến.",
+     "Cache tốn RAM trên thiết bị biên; các bài báo cáo FLOPs và không bao giờ báo cáo bộ nhớ."
+    ],
+    "direction": {
+     "title": "Nhận thức theo sự kiện: chỉ chạy bộ mã hóa khi bộ phát hiện thay đổi học được dự đoán hành động sẽ đổi",
+     "type": "mechanism",
+     "bit": "Vô hiệu cache được quyết định bởi proxy (hiệu pixel, entropy attention) chỉnh bằng tay.",
+     "flip": "Huấn luyện cổng trên đại lượng quan trọng: liệu tính lại có đẩy hành động vượt dung sai không. Một bộ phát hiện tí hon trên pixel thô hoặc đặc trưng ViT sớm dự đoán nhãn đó; bộ mã hóa đầy đủ chỉ chạy khi có 'sự kiện'. Đây là cổng học được với giám sát đúng, không phải heuristic tốt hơn.",
+     "plan": [
+      "Sinh nhãn ngoại tuyến từ checkpoint có sẵn: với các khung liên tiếp, tính cả hai hành động và đánh dấu sự kiện khi độ lệch vượt dung sai Action-JND.",
+      "Huấn luyện bộ phát hiện dưới 50K tham số trên pixel cộng cảm biến bản thể; đo precision và recall sự kiện trên nhiệm vụ giữ lại và trên vật gây nhiễu động LIBERO-Plus.",
+      "Tích hợp vào vla.cpp: tái sử dụng token đã đệm giữa các sự kiện, báo cáo ms đo thực, RAM cache và dao động tốc độ điều khiển trên CPU.",
+      "So với VLA-Cache, Gated VLA-Cache và tái sử dụng token thời gian ở cùng thành công."
+     ],
+     "claim": "x > y: cổng huấn luyện theo độ lệch hành động đạt tái sử dụng cao hơn ở cùng thành công vòng kín so với cổng proxy, và không hỏng dưới nhiễu loạn nơi cổng proxy hỏng.",
+     "cost": "Sinh nhãn cộng bộ phát hiện tí hon: dưới 1 GPU-ngày.",
+     "fit": "Quản lý cache là tính năng runtime; hạch toán bộ nhớ là đóng góp runtime trực tiếp.",
+     "risk": "Sự kiện có thể dày đặc trên cảnh thực lộn xộn; kết quả trung thực là đường cong tỷ lệ tái sử dụng theo độ động của cảnh.",
+     "days": 1
+    },
+    "key": [
+     16,
+     12,
+     28,
+     16,
+     36,
+     2
+    ]
+   },
+   "name_vi": "Bộ đệm và tái sử dụng tính toán"
   },
   {
    "id": "5.5",
@@ -567,7 +1047,42 @@
      63,
      25
     ]
-   }
+   },
+   "analysis_vi": {
+    "problem": "Chia khối khấu hao một lần suy luận trên k bước nhưng làm chậm phản ứng. Chọn chân trời thực thi thích nghi (entropy, pha động học, đồng thuận, bộ xác minh) và xử lý độ trễ suy luận (chia khối thời gian thực, điều kiện lúc huấn luyện, DEFLECT, Action ControlNet).",
+    "gaps": [
+     "Xử lý độ trễ đông đúc (RTC, điều kiện lúc huấn luyện, DEFLECT, Action ControlNet, TBD-VLA) và mỗi phương pháp dùng mô hình độ trễ riêng; nghiên cứu suy luận bất đồng bộ là so sánh có kiểm soát duy nhất.",
+     "Các phương pháp chọn chân trời không được so với baseline đơn giản nhất, chân trời cố định ngắn hơn với mô hình nhanh hơn, và đánh đổi giữa chân trời và chi phí suy luận tiết kiệm được hiếm khi được vẽ.",
+     "Mọi phương pháp giả định một nhịp chính sách; không đồng thiết kế với tính toán thích nghi (5.2) hay bộ đệm (5.4), dù chân trời quyết định có bao nhiêu tính toán khả dụng.",
+     "Độ trễ trên robot thật thay đổi theo tải, và chưa phương pháp nào thích nghi với độ trễ đo được trực tuyến."
+    ],
+    "direction": {
+     "title": "Đồng lập lịch chân trời và tính toán từ độ trễ đo thực",
+     "type": "mechanism",
+     "bit": "Chân trời thực thi được chọn từ bất định của chính sách, giả định thời gian suy luận cố định.",
+     "flip": "Chọn chân trời và ngân sách tính toán cùng nhau, mỗi khối, từ thời gian suy luận đo được và bất định của khối: chân trời dài hơn mua tính toán cho lần suy luận kế, chân trời ngắn hơn mua phản ứng. Một đầu lập lịch nhỏ trên chính sách đóng băng học điều này từ kết quả vòng kín.",
+     "plan": [
+      "Đóng băng chính sách chia khối gọn có núm ngân sách; thêm đầu lập lịch (kiểu DEHP) xuất chân trời và ngân sách từ bất định, độ trễ đo được và cảm biến bản thể.",
+      "Huấn luyện bằng RL trên LIBERO với vòng thời gian thực từ vla.cpp thay cho độ trễ mô phỏng; thưởng thành công với chi phí theo thời gian phản ứng.",
+      "So với chân trời cố định, AAC, DVAC và PACE ở cùng ngân sách CPU; đánh giá dưới biến động tải (một tiến trình chạy đồng thời trên cùng CPU).",
+      "Báo cáo thành công, thời gian phản ứng và độ trễ xấu nhất."
+     ],
+     "claim": "x > y: đồng lập lịch dưới ngân sách CPU cố định thắng mọi cặp (chân trời, ngân sách) cố định và mọi quy tắc chân trời chỉ theo bất định.",
+     "cost": "Chính sách đóng băng, đầu nhỏ, rollout CPU: khoảng 2 GPU-ngày.",
+     "fit": "Bộ lập lịch tiêu thụ thời gian chỉ runtime biết; đây là hướng gần runtime nhất trong lĩnh vực suy luận.",
+     "risk": "Huấn luyện theo độ trễ đo thực khiến kết quả gắn với phần cứng; báo cáo trên hai thiết bị để cho thấy lịch chuyển được.",
+     "days": 2
+    },
+    "key": [
+     143,
+     87,
+     66,
+     72,
+     63,
+     25
+    ]
+   },
+   "name_vi": "Chia khối hành động và tái hoạch định"
   },
   {
    "id": "6.1",
@@ -605,7 +1120,41 @@
      97,
      103
     ]
-   }
+   },
+   "analysis_vi": {
+    "problem": "Thực thi chính sách dưới ràng buộc thời gian thực: CUDA graph, pipelining VLM và action expert, bộ đệm KV hợp nhất, runtime C++ di động (vla.cpp, Embodied.cpp, PhyAI) và pipeline biên.",
+    "gaps": [
+     "Không có benchmark triển khai chuẩn; mỗi runtime báo cáo mô hình và phần cứng riêng. Nghiên cứu xuất SmolVLA đòi hỏi giao thức báo cáo cùng lúc độ trễ, kiểm tra artifact, ràng buộc giao diện và thành công vòng kín.",
+     "Không gì dưới lớp Jetson. Chưa chính sách thao tác nào khép vòng trên vi điều khiển hay thiết bị dưới 1 W.",
+     "Runtime không hiện thực các bộ tăng tốc thuật toán ở Lĩnh vực 5; chúng vẫn là nguyên mẫu PyTorch, nên tăng tốc thực hiện chưa biết.",
+     "Xuất làm thay đổi hành vi: khác biệt số học giữa đường PyTorch, ONNX và C++ làm thay đổi thành công vòng kín, và chưa runtime nào xác thực tương đương."
+    ],
+    "direction": {
+     "title": "Kiểm thử tương đương số học cho runtime VLA: chứng nhận bản xuất khép vòng như tham chiếu",
+     "type": "system",
+     "bit": "Một bản port runtime được xác thực bằng cách khớp vài tensor đầu ra trên đầu vào mẫu.",
+     "flip": "Hành vi vòng kín phân kỳ từ những khác biệt nhỏ mỗi bước (nghiên cứu xuất SmolVLA). Xác thực bản xuất bằng kiểm thử tương đương mức quỹ đạo: rollout ghép cặp từ cùng seed, độ lệch đo trong không gian hành động trên cả khối, với dung sai suy từ Action-JND. Làm nó thành công cụ, không phải việc một lần.",
+     "plan": [
+      "Định nghĩa độ đo tương đương: độ lệch hành động mỗi khối dưới seed ghép cặp, gộp trên các nhiệm vụ; hiệu chuẩn dung sai bằng Action-JND để độ lệch dưới ngưỡng chứng minh giữ được thành công.",
+      "Chạy nó trên vla.cpp so với PyTorch cho mỗi mô hình được hỗ trợ và mức lượng tử hóa; công bố bảng tương đương.",
+      "Dùng nó để định vị lớp hay kernel gây lỗi khi tương đương thất bại (chia đôi trên đồ thị).",
+      "Thêm vào CI của runtime."
+     ],
+     "claim": "Cận x: kiểm thử tương đương dự đoán tổn thất thành công vòng kín do xuất, và một bảng kernel nào phá nó.",
+     "cost": "Chỉ đánh giá; khoảng 1 GPU-ngày mỗi mô hình.",
+     "fit": "Củng cố trực tiếp vla.cpp và cho Lĩnh vực 7 một công cụ dùng lại được.",
+     "risk": "Đóng góp hệ thống; ghép với một bài cơ chế (3.3 hoặc 5.4) cho hội nghị đòi tính mới.",
+     "days": 1
+    },
+    "key": [
+     40,
+     38,
+     159,
+     97,
+     103
+    ]
+   },
+   "name_vi": "Tối ưu runtime"
   },
   {
    "id": "6.2",
@@ -640,7 +1189,38 @@
      105,
      27
     ]
-   }
+   },
+   "analysis_vi": {
+    "problem": "Chia sẻ suy luận VLA đắt đỏ cho cả đội robot hoặc tách giữa biên và đám mây: phân hoạch nhận biết mô hình-phần cứng, lập lịch nhận biết thực thi xen kẽ suy luận với chuyển động, và bộ điều khiển biên huấn luyện để chịu đặc trưng đám mây cũ.",
+    "gaps": [
+     "Chỉ bốn bài, tất cả giả định đường truyền tin cậy đến trung tâm dữ liệu; không cái nào xử lý mất kết nối hay sụp băng thông.",
+     "Tách cloud-edge giữ backbone ngữ nghĩa ở xa; bộ điều khiển biên chịu đặc trưng cũ là cơ chế duy nhất và không có cận cho độ cũ chịu được (khoảng trống chung với 3.2).",
+     "Phục vụ đội robot được đánh giá theo thông lượng; thành công vòng kín mỗi robot dưới tranh chấp không được báo cáo."
+    ],
+    "direction": {
+     "title": "Suy giảm êm khi mất liên kết: bộ điều khiển biên điều kiện theo độ cũ với dự phòng cục bộ an toàn",
+     "type": "mechanism",
+     "bit": "VLA edge-cloud giả định đặc trưng đám mây đến trong độ trễ bị chặn.",
+     "flip": "Điều kiện bộ điều khiển biên theo tuổi đặc trưng và huấn luyện trên trace mạng ghi lại để nó suy giảm dự đoán được: vượt ngưỡng độ cũ học được, nó chuyển sang chính sách cục bộ gọn (từ 3.1) thay vì hành động trên ngữ nghĩa cũ.",
+     "plan": [
+      "Phát lại trace WiFi và di động thật trong vòng LIBERO; backbone đám mây chạy trên một 3090, bộ điều khiển biên trên CPU.",
+      "Huấn luyện bộ điều khiển biên với tuổi đặc trưng làm đầu vào và một đầu tin cậy; học ngưỡng chuyển từ kết quả vòng kín.",
+      "Báo cáo thành công theo chất lượng liên kết so với baseline cloud-edge không chặn và so với chỉ cục bộ."
+     ],
+     "claim": "x > y: bộ điều khiển điều kiện theo tuổi giữ thành công trong vài điểm so với trường hợp có kết nối trên các điều kiện trace nơi baseline sụp đổ.",
+     "cost": "Dưới 2 GPU-ngày; chủ yếu rollout CPU.",
+     "fit": "Tách hai thiết bị là câu chuyện triển khai tự nhiên của runtime.",
+     "risk": "Dùng chung máy móc độ cũ với 3.2; làm như một dự án với hai đánh giá.",
+     "days": 2
+    },
+    "key": [
+     17,
+     82,
+     105,
+     27
+    ]
+   },
+   "name_vi": "Phục vụ phân tán"
   },
   {
    "id": "7.1",
@@ -678,7 +1258,41 @@
      6,
      5
     ]
-   }
+   },
+   "analysis_vi": {
+    "problem": "Điểm LIBERO danh nghĩa đã bão hòa và không nhạy. Xây benchmark làm nhiễu cảnh (LIBERO-Plus, LIBERO-PRO), tiêm độ trễ suy luận (TBD-VLA), lượng tử hóa trong vòng (LoopQ, VLAQuantBench) và đo độ trễ bên trong vòng điều khiển.",
+    "gaps": [
+     "Không benchmark nào quét cùng lúc nhiễu loạn, độ trễ và ngân sách tính toán; mỗi bài thay đổi một thứ.",
+     "Không có giao thức hardware-in-the-loop: chính sách và mô phỏng chạy trên cùng máy trạm, nên độ trễ báo cáo không bao giờ là độ trễ triển khai.",
+     "Chính sách gọn (3.1) chưa bao giờ được đánh giá trên LIBERO-Plus hay LIBERO-PRO.",
+     "Độ trễ được đo với đầu vào tổng hợp; nghiên cứu xuất SmolVLA cho thấy thành công vòng kín và độ trễ phải được báo cáo cùng nhau."
+    ],
+    "direction": {
+     "title": "LIBERO-Edge: đánh giá hardware-in-the-loop với chính sách trên thiết bị đích và quét đồng thời nhiễu loạn-độ trễ",
+     "type": "benchmark",
+     "bit": "Benchmark chạy chính sách và mô phỏng trên một máy trạm và thay đổi một yếu tố gây sức ép.",
+     "flip": "Chạy chính sách trên thiết bị mà nó được tuyên bố (CPU, Jetson, vi điều khiển), bắc cầu khung hình và khối qua liên kết thật, và quét nhiễu loạn cùng ngân sách tính toán với độ trễ thực sự phát sinh. Benchmark báo cáo một mặt, không phải một con số.",
+     "plan": [
+      "Cầu nối mô phỏng: LIBERO trên máy trạm, chính sách trên thiết bị, khung hình và khối qua USB hoặc Ethernet có dấu thời gian.",
+      "Quét các chiều nhiễu loạn LIBERO-Plus nhân lớp thiết bị nhân núm ngân sách cho 10+ checkpoint đã công bố, kể cả loại gọn.",
+      "Công bố các mặt và một độ đo tóm tắt: diện tích dưới đường thành công theo độ trễ ở một mức nhiễu loạn cho trước.",
+      "Giữ bộ công cụ không phụ thuộc mô hình để các hướng ở 3.1, 5.2 và 5.5 đánh giá trên đó."
+     ],
+     "claim": "Cận x: bao nhiêu phần thành công danh nghĩa sống sót qua độ trễ thiết bị thật cộng nhiễu loạn, theo lớp mô hình.",
+     "cost": "Chỉ rollout; vài GPU-ngày cho cả nghiên cứu.",
+     "fit": "vla.cpp là runtime phía thiết bị; bộ công cụ là nhạc cụ chung cho mọi hướng khác ở đây.",
+     "risk": "Bài benchmark cần được chấp nhận; công bố cầu nối sớm và đánh giá checkpoint của người khác để được trích dẫn.",
+     "days": 4
+    },
+    "key": [
+     164,
+     165,
+     0,
+     6,
+     5
+    ]
+   },
+   "name_vi": "Benchmark và đánh giá vòng kín"
   },
   {
    "id": "7.2",
@@ -712,7 +1326,37 @@
      32,
      10
     ]
-   }
+   },
+   "analysis_vi": {
+    "problem": "Hiểu lựa chọn biểu diễn nào làm chính sách bền vững với góc nhìn, ánh sáng và vật gây nhiễu thay vì ghi nhớ camera huấn luyện.",
+    "gaps": [
+     "Hai bài, cả hai về góc nhìn. Không gì về cách các phương pháp hiệu quả (cắt tỉa, lượng tử hóa, bộ đệm, thoát sớm) tương tác với độ bền vững, dù LoopQ cho thấy tổn thất lượng tử hóa lộ ra dưới nhiễu loạn.",
+     "Giả thuyết 'đặc trưng dày đặc đóng băng bền vững hơn' (Patch Policy, nghiên cứu góc nhìn) chưa được thử so với resampler tinh chỉnh của CoRP trên cùng nhiễu loạn.",
+     "Token gắn hình học (điều kiện tương đối theo kẹp) được chứng minh cho chính sách cỡ vừa; liệu chúng sống sót qua ngân sách token của chính sách gọn vẫn mở."
+    ],
+    "direction": {
+     "title": "Hiệu quả có đánh đổi độ bền vững không? Nghiên cứu giai thừa các bộ tăng tốc dưới nhiễu loạn, rồi một sửa chữa gắn hình học",
+     "type": "analysis",
+     "bit": "Bộ tăng tốc được kiểm chứng trên thành công danh nghĩa; độ bền vững là dòng nghiên cứu riêng.",
+     "flip": "Giao chéo mọi lớp bộ tăng tốc với mọi chiều nhiễu loạn trên cùng checkpoint và tìm phương pháp hiệu quả nào an toàn. Phân tích dự đoán một cơ chế: phương pháp bỏ token theo attention hỏng dưới vật gây nhiễu, nên gắn việc chọn token vào hình học kẹp (phát hiện của chính 7.2) hẳn làm cắt tỉa bền vững.",
+     "plan": [
+      "Quét giai thừa: {cắt tỉa token, lượng tử hóa 4 bit, bộ đệm KV, thoát sớm} nhân {camera, ánh sáng, nền, vật gây nhiễu, trạng thái ban đầu} trên 2 hoặc 3 checkpoint với LIBERO-Plus.",
+      "Báo cáo bảng tương tác: bộ tăng tốc nào mất bao nhiêu điểm dưới nhiễu loạn nào.",
+      "Cơ chế tiếp nối: chọn token tương đối theo kẹp cho chính sách gọn, đánh giá trên cùng bảng.",
+      "Thử giả thuyết dày đặc đóng băng so với resampler tinh chỉnh trên cùng nhiễu loạn như kết quả phụ."
+     ],
+     "claim": "x > y và cận x: bảng chi phí bền vững theo bộ tăng tốc, và bộ cắt tỉa gắn hình học loại bỏ chi phí lớn nhất.",
+     "cost": "Đánh giá cộng một lần huấn luyện nhỏ: khoảng 3 GPU-ngày.",
+     "fit": "Phép quét chính là bài kiểm tra mà runtime nên đi kèm.",
+     "risk": "Nửa đóng góp là phân tích; bộ cắt tỉa gắn hình học là thứ biến nó thành bài cơ chế.",
+     "days": 3
+    },
+    "key": [
+     32,
+     10
+    ]
+   },
+   "name_vi": "Nghiên cứu độ bền vững và khái quát hóa"
   }
  ],
  "papers": [

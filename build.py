@@ -15,6 +15,7 @@ README = HERE.parent / "awesome-efficient-vla" / "README.md"
 TEMPLATE = HERE / "index.template.html"
 EXTRAS = HERE / "extras.json"
 ANALYSIS = HERE / "analysis.json"
+ANALYSIS_VI = HERE / "analysis.vi.json"
 OUT_JSON = HERE / "papers.json"
 OUT_HTML = HERE / "index.html"
 
@@ -122,12 +123,18 @@ def main():
             keys.append(hits[0])
         a["key"] = keys
         cats[cid]["analysis"] = a
+    vi = json.loads(ANALYSIS_VI.read_text(encoding="utf-8"))
+    for cid, a in vi["categories"].items():
+        a["key"] = cats[cid]["analysis"]["key"]
+        cats[cid]["analysis_vi"] = a
+        cats[cid]["name_vi"] = vi["names"]["categories"][cid]
     area_analysis = analysis["areas"]
     for aid in area_analysis:
         if aid not in areas:
             sys.exit(f"analysis.json: unknown area {aid}")
     data = {
-        "areas": [{"id": k, "name": v, "analysis": area_analysis.get(k)} for k, v in sorted(areas.items())],
+        "areas": [{"id": k, "name": v, "name_vi": vi["names"]["areas"].get(k), "analysis": area_analysis.get(k), "analysis_vi": vi["areas"].get(k)} for k, v in sorted(areas.items())],
+        "roles_vi": vi["names"]["roles"],
         "categories": sorted(cats.values(), key=lambda c: c["id"]),
         "papers": papers,
         "counts": {"survey": survey_count, "added": len(papers) - survey_count},
